@@ -1,21 +1,21 @@
-package com.yannk.respira.components
+package com.yannk.respira.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
+
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.yannk.respira.R
-import java.util.Vector
 
 @Composable
-fun VectorImg(source: Int, modifier: Modifier = Modifier) {
+fun FundoImg(){
     Image(
-        painter = painterResource(id = source),
+        painter = painterResource(id = R.drawable.fundo_tela),
         contentDescription = null,
-        modifier = modifier.fillMaxWidth(),
-        contentScale = ContentScale.FillWidth
+        modifier = Modifier.fillMaxSize(),
+        contentScale = ContentScale.Crop
     )
 }

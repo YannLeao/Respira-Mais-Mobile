@@ -1,4 +1,4 @@
-package com.yannk.respira.presentation
+package com.yannk.respira.ui.presentation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -7,12 +7,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yannk.respira.R
-import com.yannk.respira.components.BigButton
-import com.yannk.respira.components.ButtonsLogin
-import com.yannk.respira.components.FundoImg
-import com.yannk.respira.components.SubscribeField
-import com.yannk.respira.components.TextInput
-import com.yannk.respira.components.VectorImg
+import com.yannk.respira.ui.components.BigButton
+import com.yannk.respira.ui.components.ButtonsLogin
+import com.yannk.respira.ui.components.FundoImg
+import com.yannk.respira.ui.components.SubscribeField
+import com.yannk.respira.ui.components.TextInput
+import com.yannk.respira.ui.components.VectorImg
 
 @Preview
 @Composable
