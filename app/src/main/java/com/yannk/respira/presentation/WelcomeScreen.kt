@@ -17,30 +17,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yannk.respira.R
+import com.yannk.respira.components.FundoImg
+import com.yannk.respira.components.VectorImg
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = false)
 @Composable
 fun WelcomeScreenn() {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
         // Fundo
-        Image(
-            painter = painterResource(id = R.drawable.fundo_tela),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
+        FundoImg()
 
         // Curva no fundo (vetor)
-        Image(
-            painter = painterResource(id = R.drawable.vector),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomEnd),
-            contentScale = ContentScale.FillWidth
+        VectorImg(
+            modifier = Modifier.align(Alignment.BottomEnd),
+            source = R.drawable.vector
         )
 
         //Caixa de Texto
@@ -71,6 +64,7 @@ fun WelcomeScreenn() {
 
             Spacer(modifier = Modifier.height(8.dp))
 
+
             Button(onClick = {},
                 modifier = Modifier
                     .width(120.dp)
@@ -83,6 +77,12 @@ fun WelcomeScreenn() {
             ) {
                 Text("Próximo",
                     fontWeight = FontWeight.Bold)
+
+                Image(
+                    modifier = Modifier.size(20.dp),
+                    painter = painterResource(id = R.drawable.keyboard_arrow_up),
+                    contentDescription = "Arrow"
+                )
             }
         }
     }
