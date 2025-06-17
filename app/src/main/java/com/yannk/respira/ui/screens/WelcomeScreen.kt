@@ -22,7 +22,7 @@ import com.yannk.respira.ui.components.VectorImg
 
 @Preview(showBackground = false)
 @Composable
-fun WelcomeScreenn() {
+fun WelcomeScreen() {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
