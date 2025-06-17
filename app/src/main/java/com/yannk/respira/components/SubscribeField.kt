@@ -16,9 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.yannk.respira.R
 
-@Preview
 @Composable
-fun SubscribeField(){
+fun SubscribeField(firstText: String, secondText: String){
     Column(modifier = Modifier.fillMaxWidth()
         .padding(top = 20.dp)) {
         Row(
@@ -35,7 +34,7 @@ fun SubscribeField(){
             )
 
             Text(
-                text = "Cadastre-se com",
+                text = firstText,
                 modifier = Modifier.padding(horizontal = 8.dp),
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.Gray
@@ -87,7 +86,7 @@ fun SubscribeField(){
                 contentColor = Color.Black )) {
 
                 Text(
-            text = "Já possui uma conta? Sign-up",
+            text = secondText,
             modifier = Modifier.padding(horizontal = 8.dp),
             style = MaterialTheme.typography.bodyMedium,
             color = Color.Gray

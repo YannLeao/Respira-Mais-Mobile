@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun ButtonsLogin (modifier: Modifier){
+fun ButtonsLogin (modifier: Modifier, isLogin: Boolean){
     Row(
         modifier = modifier
                 .fillMaxWidth()
@@ -33,25 +33,64 @@ fun ButtonsLogin (modifier: Modifier){
 
 
     ){
-
-        Button(onClick = {},
+        if (isLogin) {
+            Button(
+                onClick = {},
                 colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Transparent,
-                contentColor = Color(0xFF4E87F6)
-        )) {
-            Text("Sign-in",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.SemiBold)
+                    containerColor = Color.Transparent,
+                    contentColor = Color(0xFF4E87F6)
+                )
+            ) {
+                Text(
+                    "Sign-in",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
+            Button(
+                onClick = {},
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = Color.White
+                )
+            ) {
+                Text(
+                    "Log-in",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
         }
-
-        Button(onClick = {},
+        else{
+            Button(
+                onClick = {},
                 colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Transparent,
-                contentColor = Color.White
-        )) {
-            Text("Log-in",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.SemiBold)
+                    containerColor = Color.Transparent,
+                    contentColor = Color.White
+                )
+            ) {
+                Text(
+                    "Sign-in",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
+            Button(
+                onClick = {},
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = Color(0xFF4E87F6)
+                )
+            ) {
+                Text(
+                    "Log-in",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
         }
     }
 }
