@@ -1,4 +1,4 @@
-package com.yannk.respira.ui.presentation
+package com.yannk.respira.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -33,7 +33,7 @@ fun LoginScreen() {
 
             ButtonsLogin(
                 modifier = Modifier.padding(top = 240.dp),
-                isLogin = false
+                isLogin = true
             )
             Spacer(modifier = Modifier.height(32.dp))
 

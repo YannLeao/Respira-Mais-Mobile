@@ -1,4 +1,4 @@
-package com.yannk.respira.ui.presentation
+package com.yannk.respira.ui.screens
 
 
 import androidx.compose.foundation.Image

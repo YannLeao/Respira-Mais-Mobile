@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.yannk.respira.R
@@ -25,7 +26,7 @@ fun SubscribeField(firstText: String, secondText: String){
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         ) {
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier
                     .weight(1f)
                     .height(1.dp),
@@ -39,7 +40,7 @@ fun SubscribeField(firstText: String, secondText: String){
                 color = Color.Gray
             )
 
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier
                     .weight(1f)
                     .height(1.dp),

@@ -1,10 +1,12 @@
 package com.yannk.respira.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +33,14 @@ fun ButtonsLogin (modifier: Modifier, isLogin: Boolean){
 
     ){
         if (isLogin) {
+            // Espaço vazio à esquerda
+            Button(
+                onClick = {},
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Transparent
+                )
+            ) {}
+
             Button(
                 onClick = {},
                 colors = ButtonDefaults.buttonColors(
@@ -39,50 +49,23 @@ fun ButtonsLogin (modifier: Modifier, isLogin: Boolean){
                 )
             ) {
                 Text(
-                    "Sign-in",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-
-            Button(
-                onClick = {},
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = Color.White
-                )
-            ) {
-                Text(
                     "Log-in",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.SemiBold
                 )
             }
+
         }
         else{
             Button(
                 onClick = {},
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
-                    contentColor = Color.White
-                )
-            ) {
-                Text(
-                    "Sign-in",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-
-            Button(
-                onClick = {},
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
                     contentColor = Color(0xFF4E87F6)
                 )
             ) {
                 Text(
-                    "Log-in",
+                    "Sign-in",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.SemiBold
                 )
