@@ -1,23 +1,27 @@
 package com.yannk.respira.ui.components
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.Divider
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.yannk.respira.R
 
 @Composable
-fun SubscribeField(firstText: String, secondText: String){
+fun SubscribeField(
+    firstText: String,
+    secondText: String,
+    onClick: () -> Unit
+    ){
     Column(modifier = Modifier.fillMaxWidth()
         .padding(top = 20.dp)) {
         Row(
@@ -79,7 +83,7 @@ fun SubscribeField(firstText: String, secondText: String){
                 modifier = Modifier.size(50.dp))}
         }
 
-        Button(onClick = {},
+        Button(onClick = onClick,
             modifier = Modifier.align(Alignment.CenterHorizontally),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent,

@@ -1,12 +1,10 @@
 package com.yannk.respira.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -17,8 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-
-
+import com.yannk.respira.ui.theme.TextColor
 
 @Composable
 fun ButtonsLogin (modifier: Modifier, isLogin: Boolean){
@@ -45,7 +42,7 @@ fun ButtonsLogin (modifier: Modifier, isLogin: Boolean){
                 onClick = {},
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
-                    contentColor = Color(0xFF4E87F6)
+                    contentColor = TextColor
                 )
             ) {
                 Text(
@@ -61,7 +58,7 @@ fun ButtonsLogin (modifier: Modifier, isLogin: Boolean){
                 onClick = {},
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
-                    contentColor = Color(0xFF4E87F6)
+                    contentColor = TextColor
                 )
             ) {
                 Text(

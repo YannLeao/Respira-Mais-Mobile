@@ -10,15 +10,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.yannk.respira.ui.theme.ButtonColor
 
 @Composable
-fun BigButton(text : String){
+fun BigButton(
+    text : String,
+    onClick: () -> Unit
+){
     Button(
-        onClick = {},
+        onClick = onClick,
         modifier = Modifier.width(246.dp)
             .height(54.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF2454B2),
+            containerColor = ButtonColor,
             contentColor = Color.White
         )
     ) {

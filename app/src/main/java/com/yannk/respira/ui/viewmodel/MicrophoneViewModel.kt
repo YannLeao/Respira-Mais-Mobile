@@ -14,7 +14,7 @@ import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class InicioViewModel @Inject constructor(
+class MicrophoneViewModel @Inject constructor(
     private val apiClient: ApiClient
 ): ViewModel() {
 

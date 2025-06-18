@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.yannk.respira.R
 import com.yannk.respira.ui.components.BigButton
 import com.yannk.respira.ui.components.ButtonsLogin
@@ -13,10 +13,10 @@ import com.yannk.respira.ui.components.FundoImg
 import com.yannk.respira.ui.components.SubscribeField
 import com.yannk.respira.ui.components.TextInput
 import com.yannk.respira.ui.components.VectorImg
+import com.yannk.respira.ui.navigation.Routes
 
-@Preview(showBackground = true)
 @Composable
-fun SignInScreen() {
+fun SignInScreen(navController: NavHostController) {
     Box(
         modifier = Modifier.fillMaxSize()
     ){
@@ -28,12 +28,13 @@ fun SignInScreen() {
 
         Column (modifier = Modifier
             .fillMaxWidth()
+            .padding(WindowInsets.systemBars.asPaddingValues())
             .align(Alignment.TopCenter),
             horizontalAlignment = Alignment.CenterHorizontally){
 
-            ButtonsLogin(
-            modifier = Modifier.padding(top = 240.dp),
-                isLogin = false
+        ButtonsLogin(
+        modifier = Modifier.padding(top = 240.dp),
+            isLogin = false
 
         )
 
@@ -44,11 +45,15 @@ fun SignInScreen() {
             TextInput("Senha")
             Spacer(modifier = Modifier.height(30.dp))
 
-            BigButton("Sign-in")
+            BigButton(
+                text = "Sign-in",
+                onClick = { navController.navigate(Routes.HOME) })
 
-            SubscribeField(firstText = "Cadastre-se com", secondText = "Já possui uma conta? Sign-up")
-
+            SubscribeField(
+                firstText = "Cadastre-se com",
+                secondText = "Já possui uma conta? Sign-up",
+                onClick = {navController.navigate(Routes.LOGIN)}
+            )
         }
     }
-
 }

@@ -4,11 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
-import com.yannk.respira.ui.screens.InicioScreen
+import androidx.navigation.compose.rememberNavController
+import com.yannk.respira.ui.navigation.NavGraph
 import com.yannk.respira.ui.theme.RespiraTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,9 +16,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             RespiraTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    InicioScreen(modifier = Modifier.padding(innerPadding))
-                }
+                val navController = rememberNavController()
+                NavGraph(navController = navController)
             }
         }
     }

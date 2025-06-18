@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-
-
+import com.yannk.respira.ui.theme.ButtonColor
+import com.yannk.respira.ui.theme.TextColor
 
 @Composable
 fun TextInput( label : String) {
@@ -37,8 +37,8 @@ fun TextInput( label : String) {
                     isFocused = focusState.isFocused
                 },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Magenta,
-                unfocusedBorderColor = Color(0xFF2454B2),
+                focusedBorderColor = TextColor,
+                unfocusedBorderColor = ButtonColor,
 
             ),
             shape = if (isFocused) {
