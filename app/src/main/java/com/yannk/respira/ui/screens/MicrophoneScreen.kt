@@ -20,6 +20,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,6 +36,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.yannk.respira.ui.theme.ButtonColor
 import com.yannk.respira.ui.viewmodel.MicrophoneViewModel
+import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -44,8 +47,27 @@ fun MicrophoneScreen(
     val context = LocalContext.current
     val permissionsState = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
 
-    var isRecording = remember { mutableStateOf(false) }
-    var message = remember { mutableStateOf("") }
+    val isRecording = remember { mutableStateOf(false) }
+    val isRecorded = remember { mutableStateOf(false) }
+    val countdown = remember { mutableIntStateOf(5) }
+    val message = remember { mutableStateOf("") }
+
+    LaunchedEffect(isRecording.value) {
+        if (isRecording.value) {
+            countdown.intValue = 5
+            for (i in 4 downTo 0) {
+                delay(1000)
+                countdown.intValue = i
+            }
+
+            viewModel.startRecording(context)
+            delay(5000)
+
+            isRecording.value = false
+            isRecorded.value = true
+            message.value = "Gravação concluída!"
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -59,51 +81,58 @@ fun MicrophoneScreen(
 
             Icon(
                 imageVector = if (isRecording.value) Icons.Filled.Mic else Icons.Filled.MicOff,
-                tint = if (isRecording.value) Color.Red else Color.Gray,
+                tint = if (isRecording.value) ButtonColor else Color.Gray,
                 modifier = Modifier.size(100.dp),
                 contentDescription = null
             )
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            Text(
-                text = if (isRecording.value) "Gravando..." else "Pronto para gravar",
-                style = MaterialTheme.typography.headlineSmall
-            )
-
-            Button(
-                onClick = {
-                if (!isRecording.value) {
-                    viewModel.startRecording(context)
-                    isRecording.value = true
-                    message.value = "Gravando..."
-                } else {
-                    viewModel.stopRecording()
-                    isRecording.value = false
-                    message.value = "Gravação Concluída!"
-                } },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = ButtonColor,
-                    contentColor = Color.White
+            if (isRecording.value) {
+                Text("Gravando em ${countdown.intValue}s...")
+            } else {
+                Text(
+                    text = if (isRecorded.value) "Gravação pronta para envio" else "Pronto para gravar",
+                    style = MaterialTheme.typography.headlineSmall
                 )
-            ) {
-                Text(if (isRecording.value) "Parar" else "Iniciar")
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(onClick = {
-                viewModel.enviarAudio {
-                    message.value = if (it) "Enviado com sucesso!" else "Erro no envio"
-                } },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = ButtonColor,
-                    contentColor = Color.White
-                )
-            ) {
-                Text("Enviar Áudio")
+            if (!isRecording.value && !isRecorded.value) {
+                Button(
+                    onClick = {
+                        isRecording.value = true
+                        message.value = "Gravando..."
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = ButtonColor,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("Iniciar Gravação")
+                }
             }
 
+            if (isRecorded.value) {
+                Button(
+                    onClick = {
+                        viewModel.enviarAudio {
+                            isRecorded.value = false
+                            message.value = if (it) "Enviado com sucesso!" else "Erro no envio"
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = ButtonColor,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text("Enviar Áudio")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+            Text(message.value)
         } else {
             Button(
                 onClick = { permissionsState.launchPermissionRequest() },
@@ -115,9 +144,5 @@ fun MicrophoneScreen(
                 Text("Permitir Gravação de Áudio")
             }
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Text(text = message.value)
     }
 }
