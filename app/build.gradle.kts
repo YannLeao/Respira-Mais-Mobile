@@ -67,4 +67,5 @@ dependencies {
     implementation(libs.accompanist.permissions)
     kapt(libs.hilt.compiler)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.lifecycle.service)
 }
