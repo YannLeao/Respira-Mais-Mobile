@@ -47,7 +47,7 @@ fun SignInScreen(navController: NavHostController) {
 
             BigButton(
                 text = "Sign-in",
-                onClick = { navController.navigate(Routes.HOME) })
+                onClick = { navController.navigate(Routes.MICROPHONE) })
 
             SubscribeField(
                 firstText = "Cadastre-se com",
