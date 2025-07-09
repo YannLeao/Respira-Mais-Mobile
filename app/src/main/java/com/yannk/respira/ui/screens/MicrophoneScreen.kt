@@ -1,8 +1,10 @@
 package com.yannk.respira.ui.screens
 
 import android.Manifest
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -18,6 +20,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,11 +33,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.yannk.respira.service.SleepMonitoringService
 import com.yannk.respira.ui.theme.ButtonColor
 import com.yannk.respira.ui.viewmodel.MicrophoneViewModel
 import kotlinx.coroutines.delay
@@ -51,6 +57,17 @@ fun MicrophoneScreen(
     val isRecorded = remember { mutableStateOf(false) }
     val countdown = remember { mutableIntStateOf(5) }
     val message = remember { mutableStateOf("") }
+
+    val isServiceRunning = remember { mutableStateOf(false) }
+
+    fun toggleService(enable: Boolean) {
+        val intent = Intent(context, SleepMonitoringService::class.java)
+        if (enable) {
+            ContextCompat.startForegroundService(context, intent)
+        } else {
+            context.stopService(intent)
+        }
+    }
 
     LaunchedEffect(isRecording.value) {
         if (isRecording.value) {
@@ -78,6 +95,28 @@ fun MicrophoneScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (permissionsState.status.isGranted) {
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text("Monitoramento Noturno")
+                Switch(
+                    checked = isServiceRunning.value,
+                    onCheckedChange = { checked ->
+                        isServiceRunning.value = checked
+                        toggleService(checked)
+                    },
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = Color.White,
+                        uncheckedThumbColor = Color.White,
+                        checkedTrackColor = ButtonColor,
+                        uncheckedTrackColor = Color.Gray
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
 
             Icon(
                 imageVector = if (isRecording.value) Icons.Filled.Mic else Icons.Filled.MicOff,
