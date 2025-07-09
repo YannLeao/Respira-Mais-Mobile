@@ -2,6 +2,7 @@ package com.yannk.respira.ui.screens
 
 import android.Manifest
 import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.MicOff
@@ -97,10 +99,22 @@ fun MicrophoneScreen(
         if (permissionsState.status.isGranted) {
 
             Row(
+                modifier = Modifier
+                    .clickable {
+                        isServiceRunning.value = !isServiceRunning.value
+                        toggleService(isServiceRunning.value)
+                    }
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Monitoramento Noturno")
+                Text(
+                    text = "Monitoramento Noturno",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+
+                Spacer(modifier = Modifier.width(30.dp))
+
                 Switch(
                     checked = isServiceRunning.value,
                     onCheckedChange = { checked ->
@@ -115,6 +129,7 @@ fun MicrophoneScreen(
                     )
                 )
             }
+
 
             Spacer(modifier = Modifier.height(24.dp))
 

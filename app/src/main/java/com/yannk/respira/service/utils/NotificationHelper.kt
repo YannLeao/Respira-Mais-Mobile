@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
+import com.yannk.respira.MainActivity
 import com.yannk.respira.service.StopServiceReceiver
 
 object NotificationHelper {
@@ -17,6 +18,15 @@ object NotificationHelper {
     fun createNotification(context: Context): Notification {
         createNotificationChannel(context)
 
+        // Intent para abrir o app
+        val openAppIntent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val openAppPendingIntent = PendingIntent.getActivity(
+            context, 0, openAppIntent, PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // Intent para parar o serviço
         val stopIntent = Intent(context, StopServiceReceiver::class.java)
         val stopPendingIntent = PendingIntent.getBroadcast(
             context, 0, stopIntent, PendingIntent.FLAG_IMMUTABLE
@@ -26,6 +36,7 @@ object NotificationHelper {
             .setContentTitle("Respira+ em execução")
             .setContentText("Monitorando sons durnte o sono")
             .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
+            .setContentIntent(openAppPendingIntent)
             .setOngoing(true)
             .addAction(android.R.drawable.ic_media_pause, "Desativar", stopPendingIntent)
             .build()
