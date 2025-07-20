@@ -20,9 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 
-
 @Composable
-fun ButtonsLogin (modifier: Modifier, isLogin: Boolean){
+fun ButtonsLogin(modifier: Modifier, isLogin: Boolean) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -32,7 +31,7 @@ fun ButtonsLogin (modifier: Modifier, isLogin: Boolean){
         verticalAlignment = Alignment.CenterVertically
 
 
-    ){
+    ) {
         if (isLogin) {
             Button(
                 onClick = {},
@@ -61,8 +60,7 @@ fun ButtonsLogin (modifier: Modifier, isLogin: Boolean){
                     fontWeight = FontWeight.SemiBold
                 )
             }
-        }
-        else{
+        } else {
             Button(
                 onClick = {},
                 colors = ButtonDefaults.buttonColors(
@@ -94,5 +92,3 @@ fun ButtonsLogin (modifier: Modifier, isLogin: Boolean){
         }
     }
 }
-
-

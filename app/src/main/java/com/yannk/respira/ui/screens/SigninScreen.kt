@@ -34,7 +34,7 @@ fun SigninScreen(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally){
 
         ButtonsLogin(
-        modifier = Modifier.padding(top = 240.dp),
+            modifier = Modifier.padding(top = 240.dp),
             isLogin = false
 
         )
