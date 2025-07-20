@@ -7,8 +7,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.yannk.respira.R
+import com.yannk.respira.components.ButtonsLogin
+
 import com.yannk.respira.ui.components.BigButton
-import com.yannk.respira.ui.components.ButtonsLogin
 import com.yannk.respira.ui.components.FundoImg
 import com.yannk.respira.ui.components.SubscribeField
 import com.yannk.respira.ui.components.TextInput

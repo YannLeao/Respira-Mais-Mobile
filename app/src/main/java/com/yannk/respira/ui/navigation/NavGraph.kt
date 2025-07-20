@@ -6,13 +6,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.yannk.respira.ui.screens.LoginScreen
 import com.yannk.respira.ui.screens.MicrophoneScreen
-import com.yannk.respira.ui.screens.SignInScreen
+import com.yannk.respira.ui.screens.SigninScreen
 import com.yannk.respira.ui.screens.WelcomeScreen
 
 object Routes {
     const val WELCOME = "welcome"
     const val LOGIN = "login"
-    const val SIG_IN = "sigIn"
+    const val SIG_IN = "sigin"
     const val HOME = "home"
     const val MICROPHONE = "microphone"
 }
@@ -32,7 +32,7 @@ fun NavGraph(navController: NavHostController) {
         }
 
         composable(Routes.SIG_IN) {
-            SignInScreen(navController)
+            SigninScreen(navController)
         }
 
         composable(Routes.MICROPHONE) {
