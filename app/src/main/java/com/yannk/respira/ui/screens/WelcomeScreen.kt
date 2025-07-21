@@ -65,7 +65,7 @@ fun WelcomeScreen(navController: NavHostController) {
 
 
             Button(onClick = {
-                navController.navigate(Routes.SIG_IN)
+                navController.navigate(Routes.SIGN_IN)
             },
                 modifier = Modifier
                     .width(120.dp)
