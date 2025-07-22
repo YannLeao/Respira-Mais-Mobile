@@ -1,14 +1,17 @@
 package com.yannk.respira.ui.screens
 
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.yannk.respira.R
-import com.yannk.respira.ui.components.BigButton
 import com.yannk.respira.ui.components.ButtonsLogin
+
+import com.yannk.respira.ui.components.BigButton
 import com.yannk.respira.ui.components.FundoImg
 import com.yannk.respira.ui.components.SubscribeField
 import com.yannk.respira.ui.components.TextInput
@@ -31,12 +34,13 @@ fun LoginScreen(navController: NavHostController) {
                 .align(Alignment.TopCenter),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             ButtonsLogin(
-                modifier = Modifier.padding(top = 240.dp),
-                isLogin = true
+                modifier = Modifier.padding(top = 200.dp),
+                isLogin = true,
+                navController = navController  // Use o navController passado como parâmetro
             )
-            Spacer(modifier = Modifier.height(32.dp))
+
+            Spacer(modifier = Modifier.height(15.dp))
 
             TextInput("Email")
             Spacer(modifier = Modifier.height(10.dp))
@@ -46,14 +50,27 @@ fun LoginScreen(navController: NavHostController) {
 
             BigButton(
                 text = "Sign-up",
-                onClick = { navController.navigate(Routes.MICROPHONE) })
-            Spacer(modifier = Modifier.height(32.dp))
+                onClick = {
+                    navController.navigate(Routes.DASHBOARD_HOME) {
+                        launchSingleTop = true
+                        // Corrigido: popUpTo deve referenciar a tela atual (LOGIN)
+                        popUpTo(Routes.LOGIN) { saveState = true }
+                    }
+                }
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
 
             SubscribeField(
                 firstText = "Entre com",
                 secondText = "Não possui uma conta? Cadastre-se",
-                onClick = { navController.navigate(Routes.SIG_IN) }
-                )
+                onClick = {
+                    navController.navigate(Routes.SIGN_IN) {
+                        launchSingleTop = true
+                        popUpTo(Routes.LOGIN) { saveState = true }
+                    }
+                }
+            )
         }
     }
 }
