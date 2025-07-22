@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-// Corrigido: data class em vez de enum class
 data class PieChartItem(
     val value: Float,
     val color: Color,

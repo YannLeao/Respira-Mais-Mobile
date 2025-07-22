@@ -51,7 +51,7 @@ fun LoginScreen(navController: NavHostController) {
             BigButton(
                 text = "Sign-up",
                 onClick = {
-                    navController.navigate(Routes.MICROPHONE) {
+                    navController.navigate(Routes.DASHBOARD_HOME) {
                         launchSingleTop = true
                         // Corrigido: popUpTo deve referenciar a tela atual (LOGIN)
                         popUpTo(Routes.LOGIN) { saveState = true }

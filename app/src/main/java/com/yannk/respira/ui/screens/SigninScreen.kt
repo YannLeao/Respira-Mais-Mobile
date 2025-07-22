@@ -49,7 +49,7 @@ fun SigninScreen(navController: NavHostController) {
             BigButton(
                 text = "Sign-in",
                 onClick = {
-                    navController.navigate(Routes.MICROPHONE) {
+                    navController.navigate(Routes.DASHBOARD_HOME) {
                         // Configurações recomendadas para navegação
                         launchSingleTop = true
                         popUpTo(Routes.SIGN_IN) { saveState = true }

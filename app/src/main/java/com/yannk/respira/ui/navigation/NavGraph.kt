@@ -14,7 +14,7 @@ import com.yannk.respira.ui.screens.WelcomeScreen
 object Routes {
     const val WELCOME = "welcome"
     const val LOGIN = "login"
-    const val SIGN_IN = "sigin"
+    const val SIGN_IN = "sig_in"
     const val DASHBOARD_HOME = "dashboard_home"
     const val MICROPHONE = "microphone"
 }
@@ -41,7 +41,7 @@ fun NavGraph(navController: NavHostController) {
             MicrophoneScreen(navController)
         }
         composable(Routes.DASHBOARD_HOME){
-            DashboardHomeScreen()
+            DashboardHomeScreen(navController)
         }
     }
 }
