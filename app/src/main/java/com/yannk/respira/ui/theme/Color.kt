@@ -6,6 +6,13 @@ import androidx.compose.ui.graphics.Color
 val ButtonColor = Color(0xFF2454B2)
 val TextColor = Color(0xFF4E87F6)
 
+// Cores do Gráfico
+val SneezingColor = Color(0xFF4E87F6)
+val CoughingColor = Color(0xFF2454B2)
+val SnoringColor = Color(0xFF1D3F91)
+val OtherColor = Color(0xFFD3D3D3)
+
+
 // Cores do tema escuro
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
