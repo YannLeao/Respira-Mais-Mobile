@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.yannk.respira.R
 import com.yannk.respira.ui.components.BigButton
 import com.yannk.respira.ui.components.ButtonsLogin
@@ -21,7 +23,9 @@ fun LoginScreen(navController: NavHostController) {
     Box(modifier = Modifier.fillMaxSize()) {
         FundoImg()
         VectorImg(
-            modifier = Modifier.align(Alignment.BottomEnd),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(WindowInsets.navigationBars.asPaddingValues()),
             source = R.drawable.vector__3_
         )
 
@@ -71,4 +75,10 @@ fun LoginScreen(navController: NavHostController) {
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun Login() {
+    LoginScreen(navController = rememberNavController())
 }
