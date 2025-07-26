@@ -1,9 +1,11 @@
+import org.gradle.kotlin.dsl.android
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -39,6 +41,9 @@ android {
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
+    }
 }
 
 dependencies {
@@ -63,9 +68,16 @@ dependencies {
     implementation(libs.squareup.retrofit2.converter.gson)
     implementation(libs.logging.interceptor)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.hilt.android)
     implementation(libs.accompanist.permissions)
-    kapt(libs.hilt.compiler)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.lifecycle.service)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
 }
