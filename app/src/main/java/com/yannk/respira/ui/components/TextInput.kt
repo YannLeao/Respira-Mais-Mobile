@@ -14,21 +14,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.yannk.respira.ui.theme.ButtonColor
 import com.yannk.respira.ui.theme.TextColor
 
 @Composable
-fun TextInput( label : String) {
+fun TextInput(
+    label : String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    isPassword: Boolean = false
+) {
     Box {
-        var texto by remember { mutableStateOf("") }
         var isFocused by remember { mutableStateOf(false) }
 
 
         OutlinedTextField(
-            value = texto,
-            onValueChange = { texto = it },
+            value = value,
+            onValueChange = onValueChange,
             label = { Text(label) },
             modifier = Modifier
                 .fillMaxWidth()
@@ -39,12 +44,19 @@ fun TextInput( label : String) {
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = TextColor,
                 unfocusedBorderColor = ButtonColor,
-
+                focusedLabelColor = TextColor,
+                unfocusedLabelColor = ButtonColor,
+                cursorColor = TextColor,
             ),
             shape = if (isFocused) {
                 RoundedCornerShape(12.dp)
             } else {
                 RoundedCornerShape(20.dp)
+            },
+            visualTransformation = if (isPassword) {
+                PasswordVisualTransformation()
+            } else {
+                VisualTransformation.None
             }
         )
     }

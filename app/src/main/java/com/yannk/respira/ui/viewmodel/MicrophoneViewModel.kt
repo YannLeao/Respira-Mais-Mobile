@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yannk.respira.data.remote.ApiClient
+import com.yannk.respira.data.remote.api.ApiClient
 import com.yannk.respira.service.utils.gravarWav
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

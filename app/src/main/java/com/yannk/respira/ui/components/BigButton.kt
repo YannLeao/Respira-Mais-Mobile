@@ -15,17 +15,19 @@ import com.yannk.respira.ui.theme.ButtonColor
 @Composable
 fun BigButton(
     text : String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    enabled: Boolean
 ){
     Button(
         onClick = onClick,
+        enabled = enabled,
         modifier = Modifier.width(246.dp)
             .height(54.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = ButtonColor,
-            contentColor = Color.White
+            containerColor = if (enabled) ButtonColor else Color.White,
+            contentColor = if (enabled) Color.White else ButtonColor
         )
     ) {
-        Text(text, fontWeight = FontWeight.Medium)
+        Text(text, fontWeight = FontWeight.Medium, color = if (enabled) Color.White else ButtonColor)
     }
 }

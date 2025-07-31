@@ -3,8 +3,8 @@ package com.yannk.respira.service
 import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.LifecycleService
-import com.yannk.respira.data.remote.ApiClient
-import com.yannk.respira.service.utils.NotificationHelper
+import com.yannk.respira.data.remote.api.ApiClient
+import com.yannk.respira.service.utils.NotificationUtil
 import com.yannk.respira.service.utils.gravarWav
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -30,7 +30,7 @@ class SleepMonitoringService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
-        startForeground(NotificationHelper.NOTIFICATION_ID, NotificationHelper.createNotification(this))
+        startForeground(NotificationUtil.NOTIFICATION_ID, NotificationUtil.createNotification(this))
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

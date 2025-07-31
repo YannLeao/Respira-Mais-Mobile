@@ -1,9 +1,12 @@
+import org.gradle.kotlin.dsl.android
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
-    id("kotlin-kapt")
+    alias(libs.plugins.room)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -29,15 +32,27 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
+    }
+
+    room {
+        schemaDirectory("debug", layout.projectDirectory.dir("schemas"))
+        schemaDirectory("release", layout.projectDirectory.dir("schemas"))
     }
 }
 
@@ -59,13 +74,30 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.squareup.retrofit2.retrofit)
-    implementation(libs.squareup.retrofit2.converter.gson)
     implementation(libs.logging.interceptor)
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.hilt.android)
-    implementation(libs.accompanist.permissions)
-    kapt(libs.hilt.compiler)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.lifecycle.service)
+    implementation(libs.kotlinx.coroutines.android)
+
+    // Accompanist
+    implementation(libs.accompanist.permissions)
+
+    // Retrofit
+    implementation(libs.squareup.retrofit2.retrofit)
+    implementation(libs.squareup.retrofit2.converter.gson)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.compiler)
+
+    // Preferences Data Store
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.core)
+
 }

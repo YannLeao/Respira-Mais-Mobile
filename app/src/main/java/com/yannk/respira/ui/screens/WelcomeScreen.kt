@@ -12,8 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.yannk.respira.R
 import com.yannk.respira.ui.components.FundoImg
 import com.yannk.respira.ui.components.VectorImg
@@ -30,7 +32,9 @@ fun WelcomeScreen(navController: NavHostController) {
 
         // Curva no fundo (vetor)
         VectorImg(
-            modifier = Modifier.align(Alignment.BottomEnd),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(WindowInsets.navigationBars.asPaddingValues()),
             source = R.drawable.vector
         )
 
@@ -89,3 +93,8 @@ fun WelcomeScreen(navController: NavHostController) {
     }
 }
 
+@Preview
+@Composable
+private fun Welcome() {
+    WelcomeScreen(navController = rememberNavController())
+}

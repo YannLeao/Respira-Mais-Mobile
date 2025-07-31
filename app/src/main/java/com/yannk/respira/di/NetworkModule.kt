@@ -1,6 +1,6 @@
 package com.yannk.respira.di
 
-import com.yannk.respira.data.remote.ApiClient
+import com.yannk.respira.data.remote.api.ApiClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
