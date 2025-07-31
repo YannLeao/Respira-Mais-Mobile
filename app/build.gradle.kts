@@ -74,13 +74,17 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(libs.squareup.retrofit2.retrofit)
-    implementation(libs.squareup.retrofit2.converter.gson)
     implementation(libs.logging.interceptor)
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.accompanist.permissions)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.lifecycle.service)
+    implementation(libs.kotlinx.coroutines.android)
+
+    // Accompanist
+    implementation(libs.accompanist.permissions)
+
+    // Retrofit
+    implementation(libs.squareup.retrofit2.retrofit)
+    implementation(libs.squareup.retrofit2.converter.gson)
 
     // Room
     implementation(libs.androidx.room.runtime)
@@ -89,5 +93,11 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
+
+    // Preferences Data Store
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.datastore.core)
+
 }
