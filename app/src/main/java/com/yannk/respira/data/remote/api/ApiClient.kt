@@ -1,4 +1,4 @@
-package com.yannk.respira.data.remote
+package com.yannk.respira.data.remote.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiClient {
 
-    private val baseUrl = "http://172.29.10.117:8000/"
+    private val baseUrl = "http://192.168.18.3:8000/"
 
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY

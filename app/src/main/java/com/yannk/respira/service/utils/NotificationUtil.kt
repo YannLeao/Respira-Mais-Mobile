@@ -10,7 +10,7 @@ import androidx.core.app.NotificationCompat
 import com.yannk.respira.MainActivity
 import com.yannk.respira.service.StopServiceReceiver
 
-object NotificationHelper {
+object NotificationUtil {
 
     const val CHANNEL_ID = "sleep_monitoring_channel"
     const val NOTIFICATION_ID = 1

@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import com.yannk.respira.ui.screens.DashboardHomeScreen
 import com.yannk.respira.ui.screens.LoginScreen
 import com.yannk.respira.ui.screens.MicrophoneScreen
-import com.yannk.respira.ui.screens.SigninScreen
+import com.yannk.respira.ui.screens.SignInScreen
 import com.yannk.respira.ui.screens.WelcomeScreen
 
 
@@ -34,7 +34,7 @@ fun NavGraph(navController: NavHostController) {
         }
 
         composable(Routes.SIGN_IN) {
-            SigninScreen(navController)
+            SignInScreen(navController)
         }
 
         composable(Routes.MICROPHONE) {
