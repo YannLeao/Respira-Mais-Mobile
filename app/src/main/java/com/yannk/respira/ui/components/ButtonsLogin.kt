@@ -37,7 +37,13 @@ fun ButtonsLogin(modifier: Modifier, isLogin: Boolean, navController: NavHostCon
     ) {
         if (isLogin) {
             Button(
-                onClick = {navController.navigate(Routes.SIGN_IN)},
+                onClick = {
+                    navController.navigate(Routes.SIGN_IN) {
+                        launchSingleTop = true
+                        restoreState = true
+                        popUpTo(Routes.LOGIN) { saveState = true }
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
                     contentColor = Color(0xFF4E87F6)
@@ -53,7 +59,13 @@ fun ButtonsLogin(modifier: Modifier, isLogin: Boolean, navController: NavHostCon
             }
 
             Button(
-                onClick = {navController.navigate(Routes.LOGIN)},
+                onClick = {
+                    navController.navigate(Routes.LOGIN) {
+                        launchSingleTop = true
+                        restoreState = true
+                        popUpTo(Routes.SIGN_IN) { saveState = true }
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
                     contentColor = Color.White
@@ -68,7 +80,13 @@ fun ButtonsLogin(modifier: Modifier, isLogin: Boolean, navController: NavHostCon
             }
         } else {
             Button(
-                onClick = {navController.navigate(Routes.SIGN_IN)},
+                onClick = {
+                    navController.navigate(Routes.SIGN_IN) {
+                        launchSingleTop = true
+                        restoreState = true
+                        popUpTo(Routes.LOGIN) { saveState = true }
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
                     contentColor = Color.White

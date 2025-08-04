@@ -52,6 +52,6 @@ class UserViewModel @Inject constructor(
     }
 
     fun clearLoginState() {
-        _registerState.value = null
+        _loginState.value = null
     }
 }

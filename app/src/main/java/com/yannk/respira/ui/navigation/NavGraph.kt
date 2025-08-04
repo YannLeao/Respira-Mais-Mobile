@@ -1,6 +1,12 @@
 package com.yannk.respira.ui.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavDeepLink
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,23 +31,35 @@ fun NavGraph(navController: NavHostController) {
         navController = navController,
         startDestination = Routes.WELCOME
     ) {
-        composable(Routes.WELCOME) {
-            WelcomeScreen(navController)
+        fun NavGraphBuilder.defaultComposable(
+            route: String,
+            arguments: List<NamedNavArgument> = emptyList(),
+            deepLinks: List<NavDeepLink> = emptyList(),
+            content: @Composable (NavBackStackEntry) -> Unit
+        ) {
+            composable(
+                route = route,
+                arguments = arguments,
+                deepLinks = deepLinks,
+                enterTransition = {
+                    slideIntoContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                        animationSpec = tween(300))
+                },
+                exitTransition = {
+                    slideOutOfContainer(
+                        towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                        animationSpec = tween(300))
+                }
+            ) { backStackEntry ->
+                content(backStackEntry)
+            }
         }
 
-        composable(Routes.LOGIN) {
-            LoginScreen(navController)
-        }
-
-        composable(Routes.SIGN_IN) {
-            SignInScreen(navController)
-        }
-
-        composable(Routes.MICROPHONE) {
-            MicrophoneScreen(navController)
-        }
-        composable(Routes.DASHBOARD_HOME){
-            DashboardHomeScreen(navController)
-        }
+        defaultComposable(Routes.WELCOME) { WelcomeScreen(navController) }
+        defaultComposable(Routes.LOGIN) { LoginScreen(navController) }
+        defaultComposable(Routes.SIGN_IN) { SignInScreen(navController) }
+        defaultComposable(Routes.MICROPHONE) { MicrophoneScreen(navController) }
+        defaultComposable(Routes.DASHBOARD_HOME) { DashboardHomeScreen(navController) }
     }
 }

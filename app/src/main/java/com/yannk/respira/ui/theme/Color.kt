@@ -12,6 +12,11 @@ val CoughingColor = Color(0xFF2454B2)
 val SnoringColor = Color(0xFF1D3F91)
 val OtherColor = Color(0xFFD3D3D3)
 
+// Degradê
+val LilasSuave = Color(0xFF8B9CEB)
+val AzulMedio = Color(0xFF607FE5)
+val AzulClaro = Color(0xFFAAC4F8)
+val RoxoClaro = Color(0xFFBFB1F1)
 
 // Cores do tema escuro
 val Purple80 = Color(0xFFD0BCFF)
