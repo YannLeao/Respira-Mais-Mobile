@@ -2,8 +2,8 @@ package com.yannk.respira.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yannk.respira.data.remote.model.LoginDto
-import com.yannk.respira.data.remote.model.UserDto
+import com.yannk.respira.data.remote.model.request.LoginDto
+import com.yannk.respira.data.remote.model.request.UserDto
 import com.yannk.respira.data.repository.UserRepository
 import com.yannk.respira.util.ResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
