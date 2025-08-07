@@ -17,9 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.yannk.respira.ui.components.BottomBar
 import com.yannk.respira.ui.components.MonthlyReports
 import com.yannk.respira.ui.components.TopBar
@@ -31,15 +33,14 @@ import com.yannk.respira.ui.viewmodel.ReportsViewModel
 
 @Composable
 fun ReportsScreen(
-    navController: NavHostController,
-    viewModel: ReportsViewModel = hiltViewModel()
+    navController: NavHostController
+    //viewModel: ReportsViewModel = hiltViewModel()
 ) {
     var selectedTab by remember { mutableStateOf(ReportTab.WEEKLY) }
 
     Scaffold(
-        topBar = {
-            TopBar(
-                onReload = { viewModel.refreshData() }
+        topBar = { TopBar(
+                onReload = {/* viewModel.refreshData()*/ }
             )
         },
         bottomBar = {
@@ -93,4 +94,10 @@ fun ReportsScreen(
 enum class ReportTab(val title: String) {
     WEEKLY("Semanal"),
     MONTHLY("Mensal")
+}
+
+@Preview
+@Composable
+private fun ReportsScreenPrev() {
+    ReportsScreen(navController = rememberNavController())
 }
