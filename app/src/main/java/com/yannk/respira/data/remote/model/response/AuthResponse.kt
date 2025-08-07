@@ -1,4 +1,4 @@
-package com.yannk.respira.data.remote.model
+package com.yannk.respira.data.remote.model.response
 
 data class AuthResponse(
     val access_token: String,

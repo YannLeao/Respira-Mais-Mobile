@@ -1,4 +1,4 @@
-package com.yannk.respira.data.remote.model
+package com.yannk.respira.data.remote.model.request
 
 data class UserDto(
     val name: String,
