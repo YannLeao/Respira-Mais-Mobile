@@ -10,9 +10,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.yannk.respira.ui.screens.DashboardHomeScreen
+import com.yannk.respira.ui.screens.AboutScreen
+import com.yannk.respira.ui.screens.DashboardScreen
 import com.yannk.respira.ui.screens.LoginScreen
 import com.yannk.respira.ui.screens.MicrophoneScreen
+import com.yannk.respira.ui.screens.ProfileScreen
+import com.yannk.respira.ui.screens.ReportsScreen
+import com.yannk.respira.ui.screens.SettingsScreen
 import com.yannk.respira.ui.screens.SignInScreen
 import com.yannk.respira.ui.screens.WelcomeScreen
 
@@ -23,6 +27,10 @@ object Routes {
     const val SIGN_IN = "sig_in"
     const val DASHBOARD_HOME = "dashboard_home"
     const val MICROPHONE = "microphone"
+    const val REPORTS = "reports"
+    const val PROFILE = "profile"
+    const val ABOUT = "about"
+    const val SETTINGS = "settings"
 }
 
 @Composable
@@ -60,6 +68,10 @@ fun NavGraph(navController: NavHostController) {
         defaultComposable(Routes.LOGIN) { LoginScreen(navController) }
         defaultComposable(Routes.SIGN_IN) { SignInScreen(navController) }
         defaultComposable(Routes.MICROPHONE) { MicrophoneScreen(navController) }
-        defaultComposable(Routes.DASHBOARD_HOME) { DashboardHomeScreen(navController) }
+        defaultComposable(Routes.DASHBOARD_HOME) { DashboardScreen(navController) }
+        defaultComposable(Routes.PROFILE) { ProfileScreen(navController) }
+        defaultComposable(Routes.REPORTS) { ReportsScreen(navController) }
+        defaultComposable(Routes.ABOUT) { AboutScreen(navController) }
+        defaultComposable(Routes.SETTINGS) { SettingsScreen(navController) }
     }
 }
