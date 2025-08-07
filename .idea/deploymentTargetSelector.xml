@@ -5,27 +5,19 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="DashboardHomeScreen">
+      <SelectionState runConfigName="BottomBarPrev">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="DashBoard">
+      <SelectionState runConfigName="DashBoard (1)">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="Login">
+      <SelectionState runConfigName="DashBoardPrev">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="SigIn">
+      <SelectionState runConfigName="AboutScreenPrev">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-07-28T17:50:35.104719Z">
-          <Target type="DEFAULT_BOOT">
-            <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=ZF523M7DXV" />
-            </handle>
-          </Target>
-        </DropdownSelection>
-        <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="Welcome">
+      <SelectionState runConfigName="SettingsScreenPrev">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

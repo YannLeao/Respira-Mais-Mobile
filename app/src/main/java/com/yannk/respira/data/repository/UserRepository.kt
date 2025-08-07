@@ -76,4 +76,12 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun getToken(): String? = preferences.getToken()
+
+    suspend fun getUserName(): String {
+        return userDao.getUserName()
+    }
+
+    suspend fun getUserEmail(): String {
+        return userDao.getUserEmail()
+    }
 }

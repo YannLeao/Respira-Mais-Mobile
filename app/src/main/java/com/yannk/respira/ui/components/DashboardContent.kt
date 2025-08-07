@@ -1,4 +1,4 @@
-package com.yannk.respira.ui.screens
+package com.yannk.respira.ui.components
 
 import android.Manifest
 import android.content.Intent
@@ -37,15 +37,16 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.yannk.respira.service.SleepMonitoringService
-import com.yannk.respira.ui.components.DonutChart
-import com.yannk.respira.ui.components.audioStats
 import com.yannk.respira.ui.navigation.Routes
 import com.yannk.respira.ui.theme.ButtonColor
 import com.yannk.respira.ui.theme.TextColor
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun DashboardHomeScreen(navController: NavHostController) {
+fun DashboardContent(
+    navController: NavHostController,
+    modifier: Modifier
+) {
     val context = LocalContext.current
     val permissionsState = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
     val isServiceRunning = remember { mutableStateOf(false) }
@@ -60,30 +61,30 @@ fun DashboardHomeScreen(navController: NavHostController) {
     }
 
     Column(
-        modifier = Modifier
+        modifier = Modifier.Companion
             .fillMaxSize()
-            .background(Color.White)
+            .background(Color.Companion.White)
             .verticalScroll(rememberScrollState())
             .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterVertically)
+        horizontalAlignment = Alignment.Companion.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.Companion.CenterVertically)
     ) {
         Text(
             text = "Monitoramento | Respira+",
             fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Companion.Bold,
             color = TextColor
         )
 
         // Gráfico Donut
         DonutChart(
-            modifier = Modifier
+            modifier = Modifier.Companion
                 .fillMaxWidth()
                 .padding(16.dp),
             data = audioStats
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.Companion.height(16.dp))
 
         // Switch com label
         if (permissionsState.status.isGranted) {
@@ -96,13 +97,13 @@ fun DashboardHomeScreen(navController: NavHostController) {
                     }
                     .padding(vertical = 8.dp),
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.Companion.CenterVertically
             ) {
                 Text(
                     text = "Ativar Monitoramento Noturno",
                     modifier = Modifier.padding(end = 8.dp),
                     color = ButtonColor,
-                    fontWeight = FontWeight.Medium,
+                    fontWeight = FontWeight.Companion.Medium,
                     fontSize = 16.sp
                 )
 
@@ -113,16 +114,15 @@ fun DashboardHomeScreen(navController: NavHostController) {
                         toggleService(checked)
                     },
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = Color.White,
-                        uncheckedThumbColor = Color.White,
+                        checkedThumbColor = Color.Companion.White,
+                        uncheckedThumbColor = Color.Companion.White,
                         checkedTrackColor = ButtonColor,
-                        uncheckedTrackColor = Color.Gray
+                        uncheckedTrackColor = Color.Companion.Gray
                     )
                 )
             }
         }
 
-        // Botão para microfone
         Button(
             onClick = { navController.navigate(Routes.MICROPHONE) },
             colors = ButtonDefaults.buttonColors(containerColor = ButtonColor),
@@ -130,8 +130,8 @@ fun DashboardHomeScreen(navController: NavHostController) {
         ) {
             Text(
                 text = "Ir para microfone",
-                color = Color.White,
-                fontWeight = FontWeight.SemiBold
+                color = Color.Companion.White,
+                fontWeight = FontWeight.Companion.SemiBold
             )
         }
     }
@@ -139,6 +139,6 @@ fun DashboardHomeScreen(navController: NavHostController) {
 
 @Preview
 @Composable
-private fun DashBoard() {
-    DashboardHomeScreen(navController = rememberNavController())
+private fun DashBoardContentPrev() {
+    DashboardContent(navController = rememberNavController(), modifier = Modifier)
 }

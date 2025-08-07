@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,9 +19,9 @@ import androidx.navigation.compose.rememberNavController
 import com.yannk.respira.R
 import com.yannk.respira.ui.components.BigButton
 import com.yannk.respira.ui.components.ButtonsLogin
+import com.yannk.respira.ui.components.ErrorDialog
 import com.yannk.respira.ui.components.FundoImg
 import com.yannk.respira.ui.components.LoadingDialog
-import com.yannk.respira.ui.components.SimpleDialog
 import com.yannk.respira.ui.components.SubscribeField
 import com.yannk.respira.ui.components.TextInput
 import com.yannk.respira.ui.components.VectorImg
@@ -34,10 +36,10 @@ fun LoginScreen(
 ) {
     val loginState = viewModel.loginState.collectAsState().value
 
-    var email = remember { mutableStateOf("") }
-    var password = remember { mutableStateOf("") }
+    var email by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
 
-    val isEnabled = email.value.isNotBlank() && password.value.isNotBlank()
+    val isEnabled = email.isNotBlank() && password.isNotBlank()
 
     Box(modifier = Modifier.fillMaxSize()) {
         FundoImg()
@@ -63,17 +65,17 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(15.dp))
 
-            TextInput(label = "Email", value = email.value, onValueChange = { email.value = it })
+            TextInput(label = "Email", value = email, onValueChange = { email = it })
             Spacer(modifier = Modifier.height(10.dp))
 
-            TextInput(label = "Senha", isPassword = true, value = password.value, onValueChange = { password.value = it })
+            TextInput(label = "Senha", isPassword = true, value = password, onValueChange = { password = it })
             Spacer(modifier = Modifier.height(42.dp))
 
             BigButton(
                 text = "Sign-up",
                 enabled = isEnabled,
                 onClick = {
-                    viewModel.login(email.value, password.value)
+                    viewModel.login(email, password)
                 }
             )
 
@@ -101,13 +103,13 @@ fun LoginScreen(
                     viewModel.clearRegisterState()
                     navController.navigate(Routes.DASHBOARD_HOME) {
                         launchSingleTop = true
-                        popUpTo(Routes.SIGN_IN) { inclusive = true }
+                        popUpTo(Routes.LOGIN) { inclusive = true }
                     }
                 }
             }
 
             is ResultState.Error -> {
-                SimpleDialog(
+                ErrorDialog(
                     message = loginState.message,
                     onDismiss = { viewModel.clearLoginState() }
                 )

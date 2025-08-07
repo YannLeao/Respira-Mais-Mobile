@@ -23,6 +23,9 @@ class UserViewModel @Inject constructor(
     private val _loginState = MutableStateFlow<ResultState<String>?>(null)
     val loginState: StateFlow<ResultState<String>?> = _loginState
 
+    val userName = MutableStateFlow<String>("")
+    val userEmail = MutableStateFlow<String>("")
+
     fun register(name: String, email: String, password: String) {
         if (name.isBlank() || email.isBlank() || password.isBlank()) {
             _registerState.value = ResultState.Error("Preencha todos os campos.")
@@ -52,6 +55,22 @@ class UserViewModel @Inject constructor(
     }
 
     fun clearLoginState() {
-        _registerState.value = null
+        _loginState.value = null
+    }
+
+    fun fetchUserName() {
+        viewModelScope.launch {
+            userName.value = repository.getUserName()
+        }
+    }
+
+    fun fetchUserEmail() {
+        viewModelScope.launch {
+            userEmail.value = repository.getUserEmail()
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch { repository.logout() }
     }
 }
