@@ -28,6 +28,7 @@ fun DashboardScreen(
         topBar = {
             TopBar(
                 onReload = {/* scope.launch { dashboardViewModel.refreshData() }*/ }
+
             )
         },
         bottomBar = {
@@ -38,7 +39,6 @@ fun DashboardScreen(
         }
     ) { padding ->
         DashboardContent(
-            navController = navController,
             modifier = Modifier.padding(padding)
         )
     }

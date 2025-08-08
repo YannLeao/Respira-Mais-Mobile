@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.sp
 import com.yannk.respira.ui.theme.CoughingColor
 import com.yannk.respira.ui.theme.OtherColor
 import com.yannk.respira.ui.theme.SneezingColor
-import com.yannk.respira.ui.theme.SnoringColor
 
 /**
  * Exibe um gráfico de pizza (Donut) com uma legenda customizável.
@@ -150,7 +149,8 @@ private fun LegendItem(stat: AudioStat) {
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = "${stat.label}: ${stat.percentage.toInt()}%",
-            fontSize = 14.sp
+            fontSize = 14.sp,
+            color = stat.color
         )
     }
 }
@@ -158,8 +158,7 @@ private fun LegendItem(stat: AudioStat) {
 
 data class AudioStat(val label: String, val percentage: Float, val color: Color)
 val audioStats = listOf(
-    AudioStat("Espirro", 25f, SneezingColor),
-    AudioStat("Tosse", 35f, CoughingColor),
-    AudioStat("Ronco", 30f, SnoringColor),
-    AudioStat("Outros", 10f, OtherColor)
+    AudioStat("Espirro", 35f, SneezingColor),
+    AudioStat("Tosse", 45f, CoughingColor),
+    AudioStat("Outros", 20f, OtherColor)
 )

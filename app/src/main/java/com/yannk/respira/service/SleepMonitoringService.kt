@@ -61,7 +61,7 @@ class SleepMonitoringService : LifecycleService() {
 
         coroutineScope.launch {
             try {
-                val response = apiClient.apiService.analisar_audio(body)
+                val response = apiClient.apiService.analisarAudio(body)
                 Log.d("SleepService", "Áudio enviado: ${response.isSuccessful}")
             } catch (e: Exception) {
                 Log.e("SleepService", "Erro ao enviar áudio", e)
