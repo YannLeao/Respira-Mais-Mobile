@@ -4,8 +4,8 @@ import com.yannk.respira.data.local.UserPreferences
 import com.yannk.respira.data.local.dao.UserDao
 import com.yannk.respira.data.local.model.User
 import com.yannk.respira.data.remote.api.ApiClient
-import com.yannk.respira.data.remote.model.LoginDto
-import com.yannk.respira.data.remote.model.UserDto
+import com.yannk.respira.data.remote.model.request.LoginDto
+import com.yannk.respira.data.remote.model.request.UserDto
 import com.yannk.respira.util.ResultState
 import retrofit2.HttpException
 import java.io.IOException

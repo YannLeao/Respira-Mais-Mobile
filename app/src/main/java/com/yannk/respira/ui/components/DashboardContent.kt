@@ -1,137 +1,96 @@
 package com.yannk.respira.ui.components
 
 import android.Manifest
-import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.yannk.respira.service.SleepMonitoringService
-import com.yannk.respira.ui.navigation.Routes
-import com.yannk.respira.ui.theme.ButtonColor
-import com.yannk.respira.ui.theme.TextColor
+import com.google.accompanist.permissions.shouldShowRationale
+import com.yannk.respira.ui.viewmodel.DashboardViewModel
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun DashboardContent(
-    navController: NavHostController,
-    modifier: Modifier
+    viewModel: DashboardViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val permissionsState = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
-    val isServiceRunning = remember { mutableStateOf(false) }
+    val permissionState = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
 
-    fun toggleService(enable: Boolean) {
-        val intent = Intent(context, SleepMonitoringService::class.java)
-        if (enable) {
-            ContextCompat.startForegroundService(context, intent)
-        } else {
-            context.stopService(intent)
+    // Observa mudanças no estado do ViewModel
+    val vmPermissionState = viewModel.permissionState.collectAsState()
+    val isMonitoring = viewModel.monitoringState.collectAsState().value
+    val sessionData = viewModel.sessionData.collectAsState().value
+
+    // Efeito para lidar com permissões
+    LaunchedEffect(permissionState.status, vmPermissionState.value) {
+        when {
+            permissionState.status.isGranted -> {
+                viewModel.onPermissionResult(true)
+            }
+            permissionState.status.shouldShowRationale -> {
+                // Mostrar explicação para o usuário
+                Toast.makeText(
+                    context,
+                    "A permissão de áudio é necessária para monitorar seu sono",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            vmPermissionState.value == DashboardViewModel.PermissionState.Requested -> {
+                permissionState.launchPermissionRequest()
+            }
         }
     }
 
     Column(
-        modifier = Modifier.Companion
+        modifier = modifier
             .fillMaxSize()
-            .background(Color.Companion.White)
             .verticalScroll(rememberScrollState())
-            .padding(24.dp),
-        horizontalAlignment = Alignment.Companion.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.Companion.CenterVertically)
+            .background(Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        Text(
-            text = "Monitoramento | Respira+",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Companion.Bold,
-            color = TextColor
-        )
+        SessionHeader(sessionData)
 
-        // Gráfico Donut
         DonutChart(
-            modifier = Modifier.Companion
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            data = audioStats
+                .padding(horizontal = 16.dp),
+            data = viewModel.audioStats
         )
 
-        Spacer(modifier = Modifier.Companion.height(16.dp))
+        MonitoringSwitch(
+            isEnabled = isMonitoring,
+            onToggle = { viewModel.toggleMonitoring() }
+        )
 
-        // Switch com label
-        if (permissionsState.status.isGranted) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        isServiceRunning.value = !isServiceRunning.value
-                        toggleService(isServiceRunning.value)
-                    }
-                    .padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.Companion.CenterVertically
-            ) {
-                Text(
-                    text = "Ativar Monitoramento Noturno",
-                    modifier = Modifier.padding(end = 8.dp),
-                    color = ButtonColor,
-                    fontWeight = FontWeight.Companion.Medium,
-                    fontSize = 16.sp
-                )
+        SessionMetrics(
+            duration = sessionData.duration,
+            quality = sessionData.quality
+        )
 
-                Switch(
-                    checked = isServiceRunning.value,
-                    onCheckedChange = { checked ->
-                        isServiceRunning.value = checked
-                        toggleService(checked)
-                    },
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = Color.Companion.White,
-                        uncheckedThumbColor = Color.Companion.White,
-                        checkedTrackColor = ButtonColor,
-                        uncheckedTrackColor = Color.Companion.Gray
-                    )
-                )
-            }
-        }
-
-        Button(
-            onClick = { navController.navigate(Routes.MICROPHONE) },
-            colors = ButtonDefaults.buttonColors(containerColor = ButtonColor),
-            modifier = Modifier.fillMaxWidth(0.8f)
-        ) {
-            Text(
-                text = "Ir para microfone",
-                color = Color.Companion.White,
-                fontWeight = FontWeight.Companion.SemiBold
+        // Mostrar aviso se a permissão foi negada
+        if (vmPermissionState.value == DashboardViewModel.PermissionState.Denied) {
+            PermissionWarning(
+                onRequestAgain = { viewModel.toggleMonitoring() }
             )
         }
     }
@@ -140,5 +99,5 @@ fun DashboardContent(
 @Preview
 @Composable
 private fun DashBoardContentPrev() {
-    DashboardContent(navController = rememberNavController(), modifier = Modifier)
+    DashboardContent(modifier = Modifier)
 }

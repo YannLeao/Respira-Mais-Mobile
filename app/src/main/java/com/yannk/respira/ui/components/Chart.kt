@@ -7,16 +7,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,7 +27,6 @@ import androidx.compose.ui.unit.sp
 import com.yannk.respira.ui.theme.CoughingColor
 import com.yannk.respira.ui.theme.OtherColor
 import com.yannk.respira.ui.theme.SneezingColor
-import com.yannk.respira.ui.theme.SnoringColor
 
 @Composable
 fun DonutChart(
@@ -112,7 +107,8 @@ private fun LegendItem(stat: AudioStat) {
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = "${stat.label}: ${stat.percentage.toInt()}%",
-            fontSize = 14.sp
+            fontSize = 14.sp,
+            color = stat.color
         )
     }
 }
@@ -120,8 +116,7 @@ private fun LegendItem(stat: AudioStat) {
 data class AudioStat(val label: String, val percentage: Float, val color: Color)
 
 val audioStats = listOf(
-    AudioStat("Espirro", 25f, SneezingColor),
-    AudioStat("Tosse", 35f, CoughingColor),
-    AudioStat("Ronco", 30f, SnoringColor),
-    AudioStat("Outros", 10f, OtherColor)
+    AudioStat("Espirro", 35f, SneezingColor),
+    AudioStat("Tosse", 45f, CoughingColor),
+    AudioStat("Outros", 20f, OtherColor)
 )

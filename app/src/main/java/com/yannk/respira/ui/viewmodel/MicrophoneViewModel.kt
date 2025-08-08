@@ -48,7 +48,7 @@ class MicrophoneViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val response = apiClient.apiService.analisar_audio(body)
+                val response = apiClient.apiService.analisarAudio(body)
                 callback(response.isSuccessful)
             } catch (e: Exception) {
                 callback(false)
