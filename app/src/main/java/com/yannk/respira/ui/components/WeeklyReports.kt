@@ -41,17 +41,17 @@ fun WeeklyReports() {
         )
 
 
-            val weeklyData: List<Pair<String, Float>> = listOf(
-                Pair("Seg", 150f),
-                Pair("Ter", 280f),
-                Pair("Qua", 90f),
-                Pair("Qui", 210f),
-                Pair("Sex", 180f),
-                Pair("Sáb", 300f),
-                Pair("Dom", 120f)
-            )
+        val weeklyData: List<Pair<String, Float>> = listOf(
+            Pair("Seg", 150f),
+            Pair("Ter", 280f),
+            Pair("Qua", 90f),
+            Pair("Qui", 210f),
+            Pair("Sex", 180f),
+            Pair("Sáb", 300f),
+            Pair("Dom", 120f)
+        )
 
-            WeeklyChart(data = weeklyData)
+        WeeklyChart(data = weeklyData)
 
 
         Column {

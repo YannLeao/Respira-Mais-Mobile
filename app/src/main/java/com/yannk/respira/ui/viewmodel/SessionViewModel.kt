@@ -1,0 +1,103 @@
+package com.yannk.respira.ui.viewmodel
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.yannk.respira.data.local.model.SessionData
+import com.yannk.respira.data.local.model.SessionEntity
+import com.yannk.respira.data.local.model.SleepQuality
+import com.yannk.respira.data.repository.SessionRepository
+import com.yannk.respira.data.repository.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import java.io.File
+import java.time.Duration
+import java.time.LocalDateTime
+import javax.inject.Inject
+
+@HiltViewModel
+class SessionViewModel @Inject constructor(
+    private val sessionRepository: SessionRepository,
+    private val userRepository: UserRepository
+) : ViewModel() {
+
+    private val _latestSession = MutableStateFlow(SessionData.empty())
+    val latestSession: StateFlow<SessionData> = _latestSession
+
+    private var currentSessionId: Int? = null
+
+    fun iniciarSessao(callback: (Int) -> Unit) {
+        viewModelScope.launch {
+            val token = userRepository.getToken() ?: return@launch
+            val sessionId = sessionRepository.iniciarSessao(token)
+            currentSessionId = sessionId
+            callback(sessionId)
+        }
+    }
+
+    fun analisarAmbiente(file: File, onResult: (String) -> Unit) {
+        val sessionId = currentSessionId ?: return
+        viewModelScope.launch {
+            val token = userRepository.getToken() ?: return@launch
+            val result = sessionRepository.analisarAmbiente(token, sessionId, file)
+            onResult(result)
+        }
+    }
+
+    fun finalizarSessao() {
+        val sessionId = currentSessionId ?: return
+        viewModelScope.launch {
+            val token = userRepository.getToken() ?: return@launch
+            val report = sessionRepository.finalizarSessao(token, sessionId)
+            sessionRepository.salvarSessao(report)
+            loadLatestSession()
+            currentSessionId = null
+        }
+    }
+
+    fun getSessionId(): Int? = currentSessionId
+
+    fun loadLatestSession() {
+        viewModelScope.launch {
+            sessionRepository.getLatestSession()?.let {
+                _latestSession.value = it.toSessionData()
+            }
+        }
+    }
+
+    private fun SessionEntity.toSessionData(): SessionData {
+        return SessionData(
+            id = sessionId.toString(),
+            dateTime = dataHoraInicio,
+            duration = calculateDuration(dataHoraInicio, dataHoraFim),
+            quality = estimateSleepQuality(quantidadeTosse, quantidadeEspirro, outrosEventos),
+            isActive = false
+        )
+    }
+
+    private fun estimateSleepQuality(tosse: Int, espirro: Int, outros: Int): SleepQuality {
+        val total = tosse + espirro + outros
+
+        return when {
+            total < 10 -> SleepQuality.GOOD
+            total < 25 -> SleepQuality.MODERATE
+            else -> SleepQuality.POOR
+        }
+    }
+
+    private fun calculateDuration(start: String, end: String): String {
+        return try {
+            val startTime = LocalDateTime.parse(start)
+            val endTime = LocalDateTime.parse(end)
+
+            val duration = Duration.between(startTime, endTime)
+            val hours = duration.toHours()
+            val minutes = duration.toMinutes()
+
+            "${hours}h ${minutes}min"
+        } catch (e: Exception) {
+            "0h 00min"
+        }
+    }
+}

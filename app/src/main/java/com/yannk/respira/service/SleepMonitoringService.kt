@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import javax.inject.Inject
 
@@ -28,6 +29,9 @@ class SleepMonitoringService : LifecycleService() {
     private var isRunning = false
     private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
+    private var token: String? = null
+    private var sessionId: Int? = null
+
     override fun onCreate() {
         super.onCreate()
         startForeground(NotificationUtil.NOTIFICATION_ID, NotificationUtil.createNotification(this))
@@ -35,13 +39,17 @@ class SleepMonitoringService : LifecycleService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        if (!isRunning) {
+
+        token = intent?.getStringExtra("token")
+        sessionId = intent?.getIntExtra("session_id", -1)
+
+        if (!isRunning && token != null && sessionId != null && sessionId != -1) {
             isRunning = true
             coroutineScope.launch {
                 while (isRunning) {
                     val file = gravarWav(applicationContext)
                     enviarAudio(file)
-                    delay(10000) // espera 10 segundos antes da próxima gravação
+                    delay(10000)
                 }
             }
         }
@@ -56,12 +64,17 @@ class SleepMonitoringService : LifecycleService() {
     }
 
     private fun enviarAudio(file: File) {
+        val tokenHeader = "Bearer $token"
         val requestFile = file.asRequestBody("audio/wav".toMediaTypeOrNull())
-        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+        val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
+        val sessionIdBody = sessionId!!.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
         coroutineScope.launch {
             try {
-                val response = apiClient.apiService.analisarAudio(body)
+                val response = apiClient.apiService.monitorarAudio(
+                    token = tokenHeader,
+                    file = filePart,
+                    sessionId = sessionIdBody)
                 Log.d("SleepService", "Áudio enviado: ${response.isSuccessful}")
             } catch (e: Exception) {
                 Log.e("SleepService", "Erro ao enviar áudio", e)

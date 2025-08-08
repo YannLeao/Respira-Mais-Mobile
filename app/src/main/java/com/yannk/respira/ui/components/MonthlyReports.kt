@@ -98,22 +98,19 @@ fun MonthlyReports() {
 private fun getChartDataForDay(day: Int): List<AudioStat> {
     return when (day % 3) {
         1 -> listOf(
-            AudioStat("Espirro", 40f, SneezingColor),
-            AudioStat("Tosse", 20f, CoughingColor),
-            AudioStat("Ronco", 30f, SnoringColor),
-            AudioStat("Outros", 10f, OtherColor)
+            AudioStat("Espirro", 50f, SneezingColor),
+            AudioStat("Tosse", 30f, CoughingColor),
+            AudioStat("Outros", 20f, OtherColor)
         )
         2 -> listOf(
-            AudioStat("Espirro", 10f, SneezingColor),
-            AudioStat("Tosse", 60f, CoughingColor),
-            AudioStat("Ronco", 15f, SnoringColor),
-            AudioStat("Outros", 15f, OtherColor)
+            AudioStat("Espirro", 15f, SneezingColor),
+            AudioStat("Tosse", 65f, CoughingColor),
+            AudioStat("Outros", 20f, OtherColor)
         )
         else -> listOf(
-            AudioStat("Espirro", 5f, SneezingColor),
-            AudioStat("Tosse", 15f, CoughingColor),
-            AudioStat("Ronco", 70f, SnoringColor),
-            AudioStat("Outros", 10f, OtherColor)
+            AudioStat("Espirro", 35f, SneezingColor),
+            AudioStat("Tosse", 35f, CoughingColor),
+            AudioStat("Outros", 30f, OtherColor)
         )
     }
 }

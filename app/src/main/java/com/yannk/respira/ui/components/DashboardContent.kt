@@ -1,6 +1,7 @@
 package com.yannk.respira.ui.components
 
 import android.Manifest
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,39 +25,35 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.yannk.respira.ui.viewmodel.DashboardViewModel
+import com.yannk.respira.ui.viewmodel.SessionViewModel
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun DashboardContent(
-    viewModel: DashboardViewModel = hiltViewModel(),
+    dashboardViewModel: DashboardViewModel = hiltViewModel(),
+    sessionViewModel: SessionViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
     val permissionState = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
 
-    val vmPermissionState = viewModel.permissionState.collectAsState()
-    val isMonitoring = viewModel.monitoringState.collectAsState().value
-    val sessionData = viewModel.sessionData.collectAsState().value
+    val vmPermissionState = dashboardViewModel.permissionState.collectAsState()
+    val isMonitoring = dashboardViewModel.monitoringState.collectAsState().value
+    val sessionData = sessionViewModel.latestSession.collectAsState().value
+    val showAmbientAnalysis = dashboardViewModel.showAmbientAnalysis.collectAsState().value
+    val showMonitoringStarted = dashboardViewModel.showMonitoringStarted.collectAsState().value
 
-    // Efeito para lidar com permissões
-    LaunchedEffect(permissionState.status, vmPermissionState.value) {
-        when (vmPermissionState.value) {
-            DashboardViewModel.PermissionState.Requested -> {
-                if (!permissionState.status.isGranted) {
-                    permissionState.launchPermissionRequest()
-                }
-            }
-            else -> Unit
-        }
-    }
-
-    // Efeito para tratar o resultado da permissão
     LaunchedEffect(permissionState.status) {
-        viewModel.onPermissionResult(
+        dashboardViewModel.onPermissionResult(
             granted = permissionState.status.isGranted,
             shouldShowRationale = permissionState.status.shouldShowRationale
         )
     }
+
+    LaunchedEffect(Unit) {
+        sessionViewModel.loadLatestSession()
+    }
+
 
     Column(
         modifier = modifier
@@ -72,12 +69,13 @@ fun DashboardContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            data = viewModel.audioStats
+            data = dashboardViewModel.audioStats
         )
 
         MonitoringSwitch(
             isEnabled = isMonitoring,
-            onToggle = { viewModel.toggleMonitoring() }
+            onToggle = { dashboardViewModel.toggleMonitoring(sessionViewModel, context) },
+            isProcessing = showAmbientAnalysis
         )
 
         SessionMetrics(
@@ -85,17 +83,30 @@ fun DashboardContent(
             quality = sessionData.quality
         )
 
+        if (showAmbientAnalysis) {
+            AmbientAnalysisDialog(
+                totalSeconds = 10,
+                onFinish = { /* Fecha automaticamente */ }
+            )
+        }
+
+        if (showMonitoringStarted) {
+            MonitoringStartedDialog(
+                onConfirm = { dashboardViewModel.dismissMonitoringStartedDialog() }
+            )
+        }
+
         when (vmPermissionState.value) {
             DashboardViewModel.PermissionState.ShowRationale -> {
                 RationaleDialog(
                     onConfirm = { permissionState.launchPermissionRequest() },
-                    onDismiss = { viewModel.toggleMonitoring() }
+                    onDismiss = { dashboardViewModel.toggleMonitoring(sessionViewModel, context) }
                 )
             }
             DashboardViewModel.PermissionState.Denied -> {
                 PermissionWarning(
                     onRequestAgain = {
-                        viewModel.toggleMonitoring()
+                        dashboardViewModel.toggleMonitoring(sessionViewModel, context)
                     }
                 )
             }
