@@ -67,7 +67,9 @@ fun ReportsScreen(
                         color = ButtonColor
                     )
                 }
-            ) {
+            )
+
+            {
                 ReportTab.entries.forEach { tab ->
                     Tab(
                         selected = selectedTab == tab,
@@ -81,6 +83,7 @@ fun ReportsScreen(
                     )
                 }
             }
+            val tabContentModifier = Modifier.fillMaxSize()
 
             when (selectedTab) {
                 ReportTab.WEEKLY -> WeeklyReports()

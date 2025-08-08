@@ -22,29 +22,33 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yannk.respira.ui.theme.CoughingColor
 import com.yannk.respira.ui.theme.OtherColor
 import com.yannk.respira.ui.theme.SneezingColor
 
+/**
+ * Exibe um gráfico de pizza (Donut) com uma legenda customizável.
+ *
+ * @param data A lista de dados `AudioStat` para desenhar no gráfico.
+ * @param modifier O Modifier a ser aplicado ao container principal.
+ * @param chartSize O diâmetro do gráfico. O valor padrão é 200.dp.
+ * @param legendOnSide Se `true`, a legenda será posicionada ao lado do gráfico (layout em Row).
+ * Se `false` (padrão), a legenda ficará abaixo do gráfico (layout em Column).
+ */
 @Composable
 fun DonutChart(
+    data: List<AudioStat>,
     modifier: Modifier = Modifier,
-    data: List<AudioStat>
+    chartSize: Dp = 200.dp,
+    legendOnSide: Boolean = false
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        // Gráfico
+    // Componente interno que desenha apenas o gráfico no Canvas
+    val chart = @Composable {
         Box(
-            modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .size(200.dp),
+            modifier = Modifier.size(chartSize),
             contentAlignment = Alignment.Center
         ) {
             Canvas(modifier = Modifier.fillMaxSize()) {
@@ -54,6 +58,7 @@ fun DonutChart(
                 val center = Offset(size.width / 2, size.height / 2)
                 val strokeWidth = radius / 2.5f
 
+                // Desenha o fundo cinza do gráfico
                 drawArc(
                     color = Color.LightGray.copy(alpha = 0.3f),
                     startAngle = -90f,
@@ -64,6 +69,7 @@ fun DonutChart(
                     style = Stroke(width = strokeWidth)
                 )
 
+                // Desenha cada fatia do gráfico
                 data.forEach { stat ->
                     val sweepAngle = (stat.percentage / total) * 360f
                     drawArc(
@@ -79,26 +85,62 @@ fun DonutChart(
                 }
             }
         }
+    }
 
-        // Legenda
+    // Componente interno que desenha apenas a legenda
+    val legend = @Composable {
+        Legend(data = data)
+    }
+
+    // A lógica principal que decide o layout
+    if (legendOnSide) {
+        // Layout com legenda ao lado
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            chart()
+            Spacer(modifier = Modifier.width(24.dp))
+            legend()
+        }
+    } else {
+        // Layout padrão com legenda abaixo
         Column(
-            modifier = Modifier.padding(top = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp),
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            data.forEach { stat ->
-                LegendItem(stat)
-            }
+            chart()
+            Spacer(modifier = Modifier.width(16.dp))
+            legend()
         }
     }
 }
 
+/**
+ * Um Composable privado que renderiza a lista de itens da legenda.
+ */
+@Composable
+private fun Legend(data: List<AudioStat>) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        data.forEach { stat ->
+            LegendItem(stat = stat)
+        }
+    }
+}
+
+/**
+ * Um Composable privado que renderiza um único item da legenda (cor + texto).
+ */
 @Composable
 private fun LegendItem(stat: AudioStat) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(horizontal = 8.dp)
-    ) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
                 .size(12.dp)
@@ -113,8 +155,8 @@ private fun LegendItem(stat: AudioStat) {
     }
 }
 
-data class AudioStat(val label: String, val percentage: Float, val color: Color)
 
+data class AudioStat(val label: String, val percentage: Float, val color: Color)
 val audioStats = listOf(
     AudioStat("Espirro", 35f, SneezingColor),
     AudioStat("Tosse", 45f, CoughingColor),

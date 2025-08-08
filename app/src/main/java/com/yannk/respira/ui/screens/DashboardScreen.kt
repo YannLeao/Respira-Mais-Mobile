@@ -18,8 +18,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun DashboardScreen(
-    navController: NavHostController,
-    dashboardViewModel: DashboardViewModel = hiltViewModel()
+    navController: NavHostController
+    //dashboardViewModel: DashboardViewModel = hiltViewModel()
     ) {
 
     val scope = rememberCoroutineScope()
@@ -27,7 +27,8 @@ fun DashboardScreen(
     Scaffold(
         topBar = {
             TopBar(
-                onReload = { scope.launch { /* dashboardViewModel.refreshData() */ } }
+                onReload = {/* scope.launch { dashboardViewModel.refreshData() }*/ }
+
             )
         },
         bottomBar = {
