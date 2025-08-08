@@ -10,7 +10,7 @@ import com.yannk.respira.data.local.model.SessionEntity
 interface SessionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSession(session: SessionEntity)
+    suspend fun insert(session: SessionEntity)
 
     @Query("SELECT * FROM session_table ORDER BY dataHoraFim DESC LIMIT 1")
     suspend fun getLatestSession(): SessionEntity?
