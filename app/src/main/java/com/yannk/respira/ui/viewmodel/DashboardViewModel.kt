@@ -52,24 +52,25 @@ class DashboardViewModel @Inject constructor(
 //    }
 
     fun toggleMonitoring() {
-        if (_permissionState.value != PermissionState.Granted) {
-            _permissionState.value = PermissionState.Requested
-            return
-        }
-
-        _monitoringState.value = !_monitoringState.value
-        if (_monitoringState.value) {
-            startMonitoringService()
-        } else {
-            stopMonitoringService()
+        when (_permissionState.value) {
+            PermissionState.Granted -> {
+                _monitoringState.value = !_monitoringState.value
+            }
+            PermissionState.Denied -> {
+                // Resetar estado para tentar novamente
+                _permissionState.value = PermissionState.Requested
+            }
+            else -> {
+                _permissionState.value = PermissionState.Requested
+            }
         }
     }
 
-    fun onPermissionResult(granted: Boolean) {
-        _permissionState.value = if (granted) {
-            PermissionState.Granted
-        } else {
-            PermissionState.Denied
+    fun onPermissionResult(granted: Boolean, shouldShowRationale: Boolean) {
+        _permissionState.value = when {
+            granted -> PermissionState.Granted
+            shouldShowRationale -> PermissionState.ShowRationale
+            else -> PermissionState.Denied
         }
 
         if (granted && _monitoringState.value) {
@@ -100,5 +101,6 @@ class DashboardViewModel @Inject constructor(
         object Requested : PermissionState()
         object Granted : PermissionState()
         object Denied : PermissionState()
+        object ShowRationale : PermissionState()
     }
 }

@@ -21,6 +21,6 @@ fun String.formatSessionDateTime(): String {
 
         "Na $dayPeriod de ${dateTime.format(dayFormatter)} às ${dateTime.format(timeFormatter)}"
     } catch (e: Exception) {
-        "Sessão iniciada recentemente"
+        "Nenhuma sessão iniciada recentemente"
     }
 }

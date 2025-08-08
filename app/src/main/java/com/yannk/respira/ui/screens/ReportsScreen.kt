@@ -33,14 +33,14 @@ import com.yannk.respira.ui.viewmodel.ReportsViewModel
 
 @Composable
 fun ReportsScreen(
-    navController: NavHostController
-    //viewModel: ReportsViewModel = hiltViewModel()
+    navController: NavHostController,
+    viewModel: ReportsViewModel = hiltViewModel()
 ) {
     var selectedTab by remember { mutableStateOf(ReportTab.WEEKLY) }
 
     Scaffold(
         topBar = { TopBar(
-                onReload = {/* viewModel.refreshData()*/ }
+                onReload = { viewModel.refreshData() }
             )
         },
         bottomBar = {
@@ -83,7 +83,6 @@ fun ReportsScreen(
                     )
                 }
             }
-            val tabContentModifier = Modifier.fillMaxSize()
 
             when (selectedTab) {
                 ReportTab.WEEKLY -> WeeklyReports()
@@ -92,7 +91,6 @@ fun ReportsScreen(
         }
     }
 }
-
 
 enum class ReportTab(val title: String) {
     WEEKLY("Semanal"),

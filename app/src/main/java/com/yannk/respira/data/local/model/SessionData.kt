@@ -12,9 +12,9 @@ data class SessionData(
     companion object {
         fun empty() = SessionData(
             id = "",
-            dateTime = "2025-07-08T20:38:00.000",
-            duration = "5h 50min",
-            quality = SleepQuality.MODERATE,
+            dateTime = "",
+            duration = "0h 00min",
+            quality = SleepQuality.UNKNOWN,
             isActive = false
         )
     }

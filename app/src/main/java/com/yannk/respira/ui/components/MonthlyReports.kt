@@ -1,5 +1,3 @@
-// Em: ui/components/MonthlyReports.kt
-
 package com.yannk.respira.ui.components
 
 import androidx.compose.foundation.background
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
@@ -25,7 +22,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yannk.respira.ui.theme.AzulClaro
@@ -36,11 +32,8 @@ import com.yannk.respira.ui.theme.OtherColor
 import com.yannk.respira.ui.theme.SneezingColor
 import com.yannk.respira.ui.theme.SnoringColor
 
-@Preview
 @Composable
 fun MonthlyReports() {
-    // PASSO 1: Variável de estado para guardar o dia selecionado.
-    // Começa como 'null' (nenhum dia selecionado).
     var selectedDay by remember { mutableStateOf<Int?>(null) }
 
     Column(
@@ -103,7 +96,6 @@ fun MonthlyReports() {
 
 
 private fun getChartDataForDay(day: Int): List<AudioStat> {
-    // Simplesmente alternamos os dados para mostrar que funciona
     return when (day % 3) {
         1 -> listOf(
             AudioStat("Espirro", 40f, SneezingColor),

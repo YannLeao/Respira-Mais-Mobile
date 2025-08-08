@@ -1,7 +1,6 @@
 package com.yannk.respira.ui.components
 
 import android.Manifest
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,29 +34,28 @@ fun DashboardContent(
     val context = LocalContext.current
     val permissionState = rememberPermissionState(Manifest.permission.RECORD_AUDIO)
 
-    // Observa mudanças no estado do ViewModel
     val vmPermissionState = viewModel.permissionState.collectAsState()
     val isMonitoring = viewModel.monitoringState.collectAsState().value
     val sessionData = viewModel.sessionData.collectAsState().value
 
     // Efeito para lidar com permissões
     LaunchedEffect(permissionState.status, vmPermissionState.value) {
-        when {
-            permissionState.status.isGranted -> {
-                viewModel.onPermissionResult(true)
+        when (vmPermissionState.value) {
+            DashboardViewModel.PermissionState.Requested -> {
+                if (!permissionState.status.isGranted) {
+                    permissionState.launchPermissionRequest()
+                }
             }
-            permissionState.status.shouldShowRationale -> {
-                // Mostrar explicação para o usuário
-                Toast.makeText(
-                    context,
-                    "A permissão de áudio é necessária para monitorar seu sono",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-            vmPermissionState.value == DashboardViewModel.PermissionState.Requested -> {
-                permissionState.launchPermissionRequest()
-            }
+            else -> Unit
         }
+    }
+
+    // Efeito para tratar o resultado da permissão
+    LaunchedEffect(permissionState.status) {
+        viewModel.onPermissionResult(
+            granted = permissionState.status.isGranted,
+            shouldShowRationale = permissionState.status.shouldShowRationale
+        )
     }
 
     Column(
@@ -87,11 +85,21 @@ fun DashboardContent(
             quality = sessionData.quality
         )
 
-        // Mostrar aviso se a permissão foi negada
-        if (vmPermissionState.value == DashboardViewModel.PermissionState.Denied) {
-            PermissionWarning(
-                onRequestAgain = { viewModel.toggleMonitoring() }
-            )
+        when (vmPermissionState.value) {
+            DashboardViewModel.PermissionState.ShowRationale -> {
+                RationaleDialog(
+                    onConfirm = { permissionState.launchPermissionRequest() },
+                    onDismiss = { viewModel.toggleMonitoring() }
+                )
+            }
+            DashboardViewModel.PermissionState.Denied -> {
+                PermissionWarning(
+                    onRequestAgain = {
+                        viewModel.toggleMonitoring()
+                    }
+                )
+            }
+            else -> Unit
         }
     }
 }

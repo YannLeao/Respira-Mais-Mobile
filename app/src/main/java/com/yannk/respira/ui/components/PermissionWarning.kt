@@ -37,7 +37,7 @@ fun PermissionWarning(onRequestAgain: () -> Unit) {
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
-            Text("O monitoramento de sonoo requer permissão para acessar o microfone")
+            Text("O monitoramento de sono requer permissão para acessar o microfone")
             Button(
                 onClick = onRequestAgain,
                 modifier = Modifier.align(Alignment.End),
