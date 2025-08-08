@@ -1,5 +1,7 @@
 package com.yannk.respira.data.remote.model.response
 
+import com.yannk.respira.data.local.model.SessionEntity
+
 data class SessionStartResponse(
     val session_id: Int,
     val ambiente: String,
