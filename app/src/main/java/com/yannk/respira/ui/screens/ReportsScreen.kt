@@ -40,7 +40,7 @@ fun ReportsScreen(
 
     Scaffold(
         topBar = { TopBar(
-                onReload = { viewModel.refreshData() }
+                onReload = { /*viewModel.refreshData()*/ }
             )
         },
         bottomBar = {
