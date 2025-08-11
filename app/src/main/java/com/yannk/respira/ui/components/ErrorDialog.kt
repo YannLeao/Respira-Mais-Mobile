@@ -28,9 +28,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.yannk.respira.ui.theme.AzulMedio
-import com.yannk.respira.ui.theme.LilasSuave
-
 
 @Composable
 fun ErrorDialog(
@@ -82,7 +79,7 @@ fun ErrorDialog(
                 modifier = Modifier.width(120.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = errorType.color,
-                    contentColor = Color.White
+                    contentColor = errorType.onColor
                 )
             ) {
                 Text("OK")
@@ -93,34 +90,47 @@ fun ErrorDialog(
 
 enum class ErrorType(
     val icon: ImageVector,
-    val color: Color,
     val title: String,
     val message: String
 ) {
     NETWORK(
         icon = Icons.Filled.WifiOff,
-        color = Color(0xFFE53935),
         title = "Sem conexão",
         message = "Verifique sua internet e tente novamente."
     ),
     CREDENTIALS(
         icon = Icons.Filled.Lock,
-        color = Color(0xFFFFA000),
         title = "Credenciais inválidas",
         message = "E-mail ou senha incorretos."
     ),
     SERVER(
         icon = Icons.Filled.CloudOff,
-        color = AzulMedio,
         title = "Erro no servidor",
         message = "Estamos com problemas técnicos. Tente mais tarde."
     ),
     GENERIC(
         icon = Icons.Filled.Error,
-        color = LilasSuave,
         title = "Ocorreu um erro",
         message = "Tente novamente ou contate o suporte."
     );
+
+    val color: Color
+        @Composable
+        get() = when (this) {
+            NETWORK -> MaterialTheme.colorScheme.error // Cor de erro padrão do tema
+            CREDENTIALS -> Color(0xFFFFA000) // Uma cor de "aviso" (amarelo/laranja)
+            SERVER -> MaterialTheme.colorScheme.primary // Usa a cor primária do app
+            GENERIC -> MaterialTheme.colorScheme.secondary // Usa a cor secundária do app
+        }
+
+    val onColor: Color
+        @Composable
+        get() = when (this) {
+            NETWORK -> MaterialTheme.colorScheme.onError
+            CREDENTIALS -> Color.White
+            SERVER -> MaterialTheme.colorScheme.onPrimary
+            GENERIC -> MaterialTheme.colorScheme.onSecondary
+        }
 
     companion object {
         fun fromMessage(message: String?): ErrorType {

@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.yannk.respira.ui.theme.ButtonColor
+
 
 @Composable
 fun MonitoringStartedDialog(
@@ -74,7 +74,7 @@ fun MonitoringStartedDialog(
                 onClick = onConfirm,
                 modifier = Modifier.width(120.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = ButtonColor,
+                    containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = Color.White
                 )
             ) {

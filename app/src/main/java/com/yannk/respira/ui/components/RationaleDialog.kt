@@ -29,8 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.yannk.respira.ui.theme.ButtonColor
-import com.yannk.respira.ui.theme.TextColor
+
 
 @Composable
 fun RationaleDialog(
@@ -52,7 +51,7 @@ fun RationaleDialog(
             Icon(
                 imageVector = Icons.Default.Mic,
                 contentDescription = "Microfone",
-                tint = ButtonColor,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(48.dp)
             )
 
@@ -85,7 +84,7 @@ fun RationaleDialog(
                     onClick = onDismiss,
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.textButtonColors(
-                        contentColor = TextColor
+                        contentColor = MaterialTheme.colorScheme.secondary
                     )
                 ) {
                     Text("Cancelar")
@@ -95,7 +94,7 @@ fun RationaleDialog(
                     onClick = onConfirm,
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = ButtonColor,
+                        containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = Color.White
                     )
                 ) {

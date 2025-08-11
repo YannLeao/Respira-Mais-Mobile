@@ -22,8 +22,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.yannk.respira.data.local.model.SleepQuality
-import com.yannk.respira.ui.theme.AzulMedio
-import com.yannk.respira.ui.theme.TextColor
+
 
 @Composable
 fun SessionMetrics(
@@ -42,7 +41,7 @@ fun SessionMetrics(
             icon = Icons.Default.AccessTime,
             title = "Duração",
             value = duration,
-            color = AzulMedio
+            color = MaterialTheme.colorScheme.secondary
         )
 
         // Card de Qualidade
@@ -72,7 +71,7 @@ private fun MetricCard(
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -89,7 +88,7 @@ private fun MetricCard(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyMedium,
-                color = TextColor
+                color = MaterialTheme.colorScheme.secondary
             )
 
             Text(

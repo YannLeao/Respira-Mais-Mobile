@@ -28,8 +28,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.yannk.respira.ui.theme.ButtonColor
-import com.yannk.respira.ui.theme.TextColor
 import kotlinx.coroutines.delay
 
 @Composable
@@ -62,7 +60,7 @@ fun AmbientAnalysisDialog(
             Icon(
                 imageVector = Icons.Default.HourglassTop,
                 contentDescription = "Analisando",
-                tint = ButtonColor,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(48.dp)
             )
 
@@ -79,7 +77,7 @@ fun AmbientAnalysisDialog(
 
             CircularProgressIndicator(
                 modifier = Modifier.size(64.dp),
-                color = ButtonColor,
+                color = MaterialTheme.colorScheme.primary,
                 strokeWidth = 4.dp
             )
 
@@ -97,7 +95,8 @@ fun AmbientAnalysisDialog(
             Text(
                 text = "$secondsLeft segundos restantes",
                 style = MaterialTheme.typography.bodySmall,
-                color = TextColor
+                color = MaterialTheme.colorScheme.primary
+
             )
         }
     }

@@ -42,9 +42,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.yannk.respira.ui.components.BottomBar
 import com.yannk.respira.ui.navigation.Routes
-import com.yannk.respira.ui.theme.AzulClaro
-import com.yannk.respira.ui.theme.ButtonColor
-import com.yannk.respira.ui.theme.TextColor
 import com.yannk.respira.ui.viewmodel.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,8 +63,8 @@ fun ProfileScreen(
             TopAppBar(
                 title = { Text("") },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = ButtonColor
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.primary
                 )
             )
         },
@@ -83,7 +80,7 @@ fun ProfileScreen(
                 .padding(padding)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .background(Color.White),
+                .background(MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
@@ -93,13 +90,13 @@ fun ProfileScreen(
                 modifier = Modifier
                     .size(120.dp)
                     .clip(CircleShape)
-                    .background(AzulClaro.copy(alpha = 0.2f)),
+                    .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = "Foto do perfil",
-                    tint = ButtonColor,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(60.dp)
                 )
             }
@@ -107,13 +104,13 @@ fun ProfileScreen(
             Text(
                 text = userName,
                 style = MaterialTheme.typography.headlineSmall,
-                color = ButtonColor
+                color = MaterialTheme.colorScheme.primary
             )
 
             Text(
                 text = userEmail,
                 style = MaterialTheme.typography.bodyMedium,
-                color = TextColor
+                color = MaterialTheme.colorScheme.secondary
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -168,8 +165,8 @@ fun SettingsItem(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White,
-            contentColor = ButtonColor
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.primary
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         onClick = onClick
@@ -182,7 +179,7 @@ fun SettingsItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = ButtonColor
+                tint = MaterialTheme.colorScheme.primary
             )
             Text(text)
         }

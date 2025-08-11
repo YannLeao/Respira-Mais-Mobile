@@ -20,8 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.yannk.respira.ui.theme.ButtonColor
-import com.yannk.respira.ui.theme.TextColor
+
 
 @Composable
 fun TextInput(
@@ -43,15 +42,7 @@ fun TextInput(
                 .onFocusChanged { focusState ->
                     isFocused = focusState.isFocused
                 },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = ButtonColor,
-                unfocusedTextColor = ButtonColor,
-                focusedBorderColor = TextColor,
-                unfocusedBorderColor = ButtonColor,
-                focusedLabelColor = TextColor,
-                unfocusedLabelColor = ButtonColor,
-                cursorColor = TextColor,
-            ),
+
 
             shape = if (isFocused) {
                 RoundedCornerShape(12.dp)

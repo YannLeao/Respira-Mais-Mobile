@@ -13,8 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.yannk.respira.data.local.model.SessionData
 import com.yannk.respira.service.utils.formatSessionDateTime
-import com.yannk.respira.ui.theme.ButtonColor
-import com.yannk.respira.ui.theme.TextColor
+
 
 @Composable
 fun SessionHeader(data: SessionData) {
@@ -27,7 +26,7 @@ fun SessionHeader(data: SessionData) {
         Text(
             text = "Monitoramento do Sono",
             style = MaterialTheme.typography.titleLarge,
-            color = ButtonColor
+            color = MaterialTheme.colorScheme.primary
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -35,7 +34,7 @@ fun SessionHeader(data: SessionData) {
         Text(
             text = data.dateTime.formatSessionDateTime(),
             style = MaterialTheme.typography.bodyMedium,
-            color = TextColor
+            color = MaterialTheme.colorScheme.secondary
         )
 
         Spacer(modifier = Modifier.height(8.dp))

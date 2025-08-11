@@ -37,11 +37,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.yannk.respira.ui.theme.ButtonColor
 import com.yannk.respira.ui.theme.CoughingColor
 import com.yannk.respira.ui.theme.OtherColor
 import com.yannk.respira.ui.theme.SneezingColor
-import com.yannk.respira.ui.theme.TextColor
 import com.yannk.respira.ui.viewmodel.ReportsViewModel
 import java.time.LocalDate
 import java.time.YearMonth
@@ -68,21 +66,21 @@ fun MonthlyReports(
             Text(
                 text = "Relatório Mensal",
                 style = MaterialTheme.typography.headlineSmall,
-                color = ButtonColor,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold
             )
 
             Text(
                 text = "${currentMonth.getDisplayName(TextStyle.FULL, Locale("pt", "BR"))} $year",
                 style = MaterialTheme.typography.bodyMedium,
-                color = TextColor
+                color = MaterialTheme.colorScheme.secondary
             )
         }
 
         selectedDay?.let { day ->
             ElevatedCard(
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
@@ -92,7 +90,7 @@ fun MonthlyReports(
                     Text(
                         text = "Dia $day",
                         style = MaterialTheme.typography.titleMedium,
-                        color = ButtonColor,
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(bottom = 16.dp)
                     )
 
@@ -112,13 +110,13 @@ fun MonthlyReports(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
-                    .background(Color.LightGray.copy(alpha = 0.1f))
-                    .border(1.dp, ButtonColor.copy(alpha = 0.2f)),
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .border(1.dp,  MaterialTheme.colorScheme.outlineVariant),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "Selecione um dia para ver os detalhes",
-                    color = TextColor.copy(alpha = 0.5f)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -148,7 +146,7 @@ private fun MonthlyCalendar(
                 Text(
                     text = day,
                     style = MaterialTheme.typography.labelSmall,
-                    color = TextColor,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center
                 )
@@ -170,13 +168,13 @@ private fun MonthlyCalendar(
                         .aspectRatio(1f)
                         .clip(CircleShape)
                         .background(
-                            if (isSelected) ButtonColor
-                            else Color.White
+                            if (isSelected) MaterialTheme.colorScheme.primary
+                            else Color.Transparent
                         )
                         .border(
                             width = 1.dp,
-                            color = if (isSelected) ButtonColor
-                            else Color.LightGray.copy(alpha = 0.5f),
+                            color = if (isSelected) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.outline,
                             shape = CircleShape
                         )
                         .clickable { onDaySelected(dayNumber) },
@@ -184,7 +182,8 @@ private fun MonthlyCalendar(
                 ) {
                     Text(
                         text = "$dayNumber",
-                        color = if (isSelected) Color.White else TextColor,
+                        color = if (isSelected) MaterialTheme.colorScheme.onPrimary
+                        else MaterialTheme.colorScheme.onSurface,
                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                     )
                 }
@@ -213,13 +212,13 @@ private fun ChartLegend(data: List<AudioStat>) {
                 Text(
                     text = item.label,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = TextColor,
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f)
                 )
                 Text(
                     text = "${item.percentage.toInt()}%",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = ButtonColor,
+                    color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold
                 )
             }

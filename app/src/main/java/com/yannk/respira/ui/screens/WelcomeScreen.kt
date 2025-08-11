@@ -20,7 +20,6 @@ import com.yannk.respira.R
 import com.yannk.respira.ui.components.FundoImg
 import com.yannk.respira.ui.components.VectorImg
 import com.yannk.respira.ui.navigation.Routes
-import com.yannk.respira.ui.theme.TextColor
 
 @Composable
 fun WelcomeScreen(navController: NavHostController) {
@@ -76,7 +75,7 @@ fun WelcomeScreen(navController: NavHostController) {
                     .align(Alignment.End),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White,
-                    contentColor = TextColor
+                    contentColor = MaterialTheme.colorScheme.secondary
                 )
 
             ) {

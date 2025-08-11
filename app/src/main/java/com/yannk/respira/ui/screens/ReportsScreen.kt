@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -27,8 +28,6 @@ import com.yannk.respira.ui.components.MonthlyReports
 import com.yannk.respira.ui.components.TopBar
 import com.yannk.respira.ui.components.WeeklyReports
 import com.yannk.respira.ui.navigation.Routes
-import com.yannk.respira.ui.theme.ButtonColor
-import com.yannk.respira.ui.theme.TextColor
 import com.yannk.respira.ui.viewmodel.ReportsViewModel
 
 @Composable
@@ -54,17 +53,17 @@ fun ReportsScreen(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             TabRow(
                 selectedTabIndex = selectedTab.ordinal,
-                containerColor = Color.White,
-                contentColor = ButtonColor,
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.primary,
                 indicator = { tabPositions ->
                     TabRowDefaults.Indicator(
                         modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTab.ordinal]),
                         height = 3.dp,
-                        color = ButtonColor
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             )
@@ -77,7 +76,7 @@ fun ReportsScreen(
                         text = {
                             Text(
                                 tab.title,
-                                color = if (selectedTab == tab) ButtonColor else TextColor
+                                color = if (selectedTab == tab) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary
                             )
                         }
                     )

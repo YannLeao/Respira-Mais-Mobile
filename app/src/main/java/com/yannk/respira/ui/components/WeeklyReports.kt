@@ -37,9 +37,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.yannk.respira.ui.theme.AzulMedio
-import com.yannk.respira.ui.theme.ButtonColor
-import com.yannk.respira.ui.theme.TextColor
 import com.yannk.respira.ui.viewmodel.ReportsViewModel
 
 @Composable
@@ -70,28 +67,28 @@ fun WeeklyReports(
             Text(
                 text = "Relatório Semanal",
                 style = MaterialTheme.typography.headlineSmall,
-                color = ButtonColor,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold
             )
 
             Text(
                 text = "De 08 a 14 de Julho de 2024",
                 style = MaterialTheme.typography.bodyMedium,
-                color = TextColor
+                color = MaterialTheme.colorScheme.secondary
             )
         }
 
         // Gráfico aprimorado
         ElevatedCard(
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = "Atividade Sonora",
                     style = MaterialTheme.typography.titleMedium,
-                    color = ButtonColor,
+                    color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
@@ -118,8 +115,8 @@ private fun GridMetrics(
     qualityScore: Float
 ) {
     val metrics = listOf(
-        Triple("Total de Eventos", "$totalEvents", ButtonColor),
-        Triple("Duração Média", "${"%.1f".format(avgDuration)}h", AzulMedio),
+        Triple("Total de Eventos", "$totalEvents", MaterialTheme.colorScheme.primary),
+        Triple("Duração Média", "${"%.1f".format(avgDuration)}h", MaterialTheme.colorScheme.secondary),
         Triple("Qualidade do Sono", "${(qualityScore * 100).toInt()}%", getQualityColor(qualityScore))
     )
 
@@ -143,7 +140,7 @@ private fun MetricCard(
     color: Color
 ) {
     Card(
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -154,7 +151,7 @@ private fun MetricCard(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyMedium,
-                color = TextColor.copy(alpha = 0.8f)
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -174,9 +171,12 @@ fun WeeklyChart(
     data: List<Pair<String, Float>>,
     modifier: Modifier = Modifier,
     chartHeight: Dp = 200.dp,
-    lineColor: Color = ButtonColor,
     fillGradient: Boolean = true
 ) {
+    val lineColor = MaterialTheme.colorScheme.primary
+    val labelColor = MaterialTheme.colorScheme.onSurfaceVariant
+
+
     if (data.isEmpty()) {
         PlaceholderChart()
         return
@@ -260,7 +260,7 @@ fun WeeklyChart(
                     x,
                     size.height - 8.dp.toPx(),
                     android.graphics.Paint().apply {
-                        color = TextColor.toArgb()
+                        color = labelColor.toArgb()
                         textSize = 12.sp.toPx()
                         textAlign = android.graphics.Paint.Align.CENTER
                     }
@@ -277,12 +277,12 @@ private fun PlaceholderChart() {
             .fillMaxWidth()
             .height(200.dp)
             .background(Color.LightGray.copy(alpha = 0.1f))
-            .border(1.dp, ButtonColor.copy(alpha = 0.2f)),
+            .border(1.dp, MaterialTheme.colorScheme.outlineVariant),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = "Sem dados disponíveis",
-            color = TextColor.copy(alpha = 0.5f)
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -297,11 +297,13 @@ private fun calculateQualityScore(data: List<Pair<String, Float>>): Float {
     }
 }
 
+@Composable
 private fun getQualityColor(score: Float): Color {
     return when {
-        score >= 0.8f -> Color(0xFF4CAF50) // Verde
-        score >= 0.5f -> Color(0xFFFFC107) // Âmbar
-        else -> Color(0xFFF44336) // Vermelho
+        score >= 0.8f -> Color(0xFF4CAF50) // Verde (cor semântica universal)
+        score >= 0.5f -> Color(0xFFFFC107) // Âmbar (cor semântica universal)
+        else -> MaterialTheme.colorScheme.error // Vermelho (usando a cor de erro do tema)
     }
 }
+
         

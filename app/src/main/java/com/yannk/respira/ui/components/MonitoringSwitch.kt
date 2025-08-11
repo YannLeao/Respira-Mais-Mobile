@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.yannk.respira.ui.theme.ButtonColor
 
 @Composable
 fun MonitoringSwitch(
@@ -31,7 +30,7 @@ fun MonitoringSwitch(
             .fillMaxWidth()
             .padding(horizontal = 24.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(
             modifier = Modifier
@@ -44,7 +43,7 @@ fun MonitoringSwitch(
             Text(
                 text = "Monitoramento de Sono",
                 style = MaterialTheme.typography.titleMedium,
-                color = ButtonColor
+                color = MaterialTheme.colorScheme.primary
             )
 
             if (isProcessing) {
@@ -55,7 +54,7 @@ fun MonitoringSwitch(
                     onCheckedChange = onToggle,
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = Color.White,
-                        checkedTrackColor = ButtonColor,
+                        checkedTrackColor = MaterialTheme.colorScheme.primary,
                         uncheckedThumbColor = Color.White,
                         uncheckedTrackColor = Color.Gray
                     )

@@ -42,8 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.yannk.respira.R
-import com.yannk.respira.ui.theme.ButtonColor
-import com.yannk.respira.ui.theme.TextColor
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,15 +53,16 @@ fun AboutScreen(navController: NavHostController) {
             TopAppBar(
                 title = { Text("Sobre o App") },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = ButtonColor
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.primary
+
                 ),
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Voltar",
-                            tint = ButtonColor
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -74,7 +74,7 @@ fun AboutScreen(navController: NavHostController) {
                 .padding(padding)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .background(Color.White),
+                .background(MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
@@ -85,19 +85,19 @@ fun AboutScreen(navController: NavHostController) {
                 contentDescription = "Logo do App",
                 modifier = Modifier
                     .size(160.dp),
-                colorFilter = ColorFilter.tint(ButtonColor)
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
             )
 
             Text(
                 text = "Respira +",
                 style = MaterialTheme.typography.headlineMedium,
-                color = ButtonColor
+                color = MaterialTheme.colorScheme.primary
             )
 
             Text(
                 text = "Versão 1.0.0",
                 style = MaterialTheme.typography.bodyMedium,
-                color = TextColor
+                color = MaterialTheme.colorScheme.secondary
             )
 
             Column(
@@ -112,7 +112,7 @@ fun AboutScreen(navController: NavHostController) {
                             "ministrada pelo Prof. Ygor Amaral na Universidade Federal Rural " +
                             "de Pernambuco (UFRPE).",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = TextColor
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Text(
@@ -120,7 +120,7 @@ fun AboutScreen(navController: NavHostController) {
                             "durante o sono e utilizar inteligência artificial para identificar e " +
                             "analisar a qualidade respiratória do usuário.",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = TextColor
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Row(
@@ -140,14 +140,14 @@ fun AboutScreen(navController: NavHostController) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_github),
                             contentDescription = "GitHub Mobile",
-                            tint = ButtonColor,
+                            tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(32.dp)
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "Repositório Mobile",
                             style = MaterialTheme.typography.bodySmall,
-                            color = ButtonColor,
+                            color = MaterialTheme.colorScheme.primary,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -165,14 +165,14 @@ fun AboutScreen(navController: NavHostController) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_github),
                             contentDescription = "GitHub API",
-                            tint = ButtonColor,
+                            tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(32.dp)
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "Repositório da API",
                             style = MaterialTheme.typography.bodySmall,
-                            color = ButtonColor,
+                            color = MaterialTheme.colorScheme.primary,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -184,7 +184,7 @@ fun AboutScreen(navController: NavHostController) {
             Button(
                 onClick = { navController.popBackStack() },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = ButtonColor,
+                    containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = Color.White
                 ),
                 modifier = Modifier.width(200.dp)

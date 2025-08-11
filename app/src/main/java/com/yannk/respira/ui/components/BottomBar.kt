@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -14,16 +15,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.yannk.respira.ui.navigation.Routes
-import com.yannk.respira.ui.theme.ButtonColor
 
 @Composable
 fun BottomBar(
     navController: NavController,
     currentRoute: String?
 ) {
+    val itemColors = NavigationBarItemDefaults.colors(
+        selectedIconColor = MaterialTheme.colorScheme.onPrimary,
+        unselectedIconColor = MaterialTheme.colorScheme.primary,
+        indicatorColor = MaterialTheme.colorScheme.primary
+    )
+
     NavigationBar(
-        containerColor = Color.White,
-        contentColor = ButtonColor
+        containerColor = MaterialTheme.colorScheme.surface,
+
     ) {
         NavigationBarItem(
             icon = { Icon(Icons.Default.Person, contentDescription = "Perfil") },
@@ -33,11 +39,7 @@ fun BottomBar(
                     navController.navigate(Routes.PROFILE)
                 }
             },
-            colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = Color.White,
-                unselectedIconColor = ButtonColor,
-                indicatorColor = ButtonColor
-            )
+            colors = itemColors
         )
 
         NavigationBarItem(
@@ -50,11 +52,7 @@ fun BottomBar(
                     }
                 }
             },
-            colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = Color.White,
-                unselectedIconColor = ButtonColor,
-                indicatorColor = ButtonColor
-            )
+            colors = itemColors
         )
 
         NavigationBarItem(
@@ -65,11 +63,7 @@ fun BottomBar(
                     navController.navigate(Routes.REPORTS)
                 }
             },
-            colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = Color.White,
-                unselectedIconColor = ButtonColor,
-                indicatorColor = ButtonColor
-            )
+            colors = itemColors
         )
     }
 }
