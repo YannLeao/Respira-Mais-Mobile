@@ -7,10 +7,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yannk.respira.data.local.model.SessionData
 import com.yannk.respira.data.local.model.SessionEntity
+import com.yannk.respira.data.local.model.SleepEnvironment
 import com.yannk.respira.data.local.model.SleepQuality
 import com.yannk.respira.data.repository.SessionRepository
 import com.yannk.respira.data.repository.UserRepository
 import com.yannk.respira.service.SleepMonitoringService
+import com.yannk.respira.service.utils.formatTime
+import com.yannk.respira.ui.components.AudioStat
+import com.yannk.respira.ui.theme.CoughingColor
+import com.yannk.respira.ui.theme.OtherColor
+import com.yannk.respira.ui.theme.SneezingColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -90,13 +96,31 @@ class SessionViewModel @Inject constructor(
         viewModelScope.launch { sessionRepository.logout() }
     }
 
+    // Dados do gráfico (mockados inicialmente)
+    val audioStats = listOf(
+        AudioStat("Tosse", 45f, CoughingColor),
+        AudioStat("Espirro", 35f, SneezingColor),
+        AudioStat("Outros", 20f, OtherColor)
+    )
+
     private fun SessionEntity.toSessionData(): SessionData {
         return SessionData(
             id = sessionId.toString(),
             dateTime = dataHoraInicio,
+            startTime = dataHoraInicio.formatTime(),
+            endTime = dataHoraFim.formatTime(),
             duration = calculateDuration(dataHoraInicio, dataHoraFim),
             quality = estimateSleepQuality(quantidadeTosse, quantidadeEspirro, outrosEventos),
-            isActive = false
+            environment = when(ambiente.lowercase()) {
+                "silent" -> SleepEnvironment.SILENT
+                "moderate" -> SleepEnvironment.MODERATE
+                "noisy" -> SleepEnvironment.NOISY
+                else -> SleepEnvironment.UNKNOWN
+            },
+            isActive = false,
+            coughCount = quantidadeTosse,
+            sneezeCount = quantidadeEspirro,
+            otherEvents = outrosEventos
         )
     }
 

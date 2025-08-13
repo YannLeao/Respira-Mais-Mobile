@@ -35,14 +35,6 @@ class DashboardViewModel @Inject constructor(
     private val _showMonitoringStarted = MutableStateFlow(false)
     val showMonitoringStarted: StateFlow<Boolean> = _showMonitoringStarted
 
-
-    // Dados do gráfico (mockados inicialmente)
-    val audioStats = listOf(
-        AudioStat("Tosse", 45f, CoughingColor),
-        AudioStat("Espirro", 35f, SneezingColor),
-        AudioStat("Outros", 20f, OtherColor)
-    )
-
     fun onPermissionResult(granted: Boolean, shouldShowRationale: Boolean) {
         _permissionState.value = when {
             granted -> PermissionState.Granted

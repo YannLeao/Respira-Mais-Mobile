@@ -69,7 +69,7 @@ fun DashboardContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            data = dashboardViewModel.audioStats
+            data = sessionViewModel.audioStats
         )
 
         MonitoringSwitch(
@@ -80,7 +80,10 @@ fun DashboardContent(
 
         SessionMetrics(
             duration = sessionData.duration,
-            quality = sessionData.quality
+            quality = sessionData.quality,
+            startTime = sessionData.startTime,
+            endTime = sessionData.endTime,
+            environment = sessionData.environment
         )
 
         if (showAmbientAnalysis) {
