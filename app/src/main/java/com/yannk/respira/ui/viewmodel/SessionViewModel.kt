@@ -1,5 +1,8 @@
 package com.yannk.respira.ui.viewmodel
 
+import android.content.Context
+import android.content.Intent
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yannk.respira.data.local.model.SessionData
@@ -7,6 +10,7 @@ import com.yannk.respira.data.local.model.SessionEntity
 import com.yannk.respira.data.local.model.SleepQuality
 import com.yannk.respira.data.repository.SessionRepository
 import com.yannk.respira.data.repository.UserRepository
+import com.yannk.respira.service.SleepMonitoringService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -45,6 +49,22 @@ class SessionViewModel @Inject constructor(
         }
     }
 
+    fun startMonitoringService(context: Context, sessionId: Int) {
+        viewModelScope.launch {
+            val token = userRepository.getToken() ?: return@launch
+            val intent = Intent(context, SleepMonitoringService::class.java).apply {
+                putExtra("token", token)
+                putExtra("session_id", sessionId)
+            }
+            ContextCompat.startForegroundService(context, intent)
+        }
+    }
+
+    fun stopMonitoringService(context: Context) {
+        val intent = Intent(context, SleepMonitoringService::class.java)
+        context.stopService(intent)
+    }
+
     fun finalizarSessao() {
         val sessionId = currentSessionId ?: return
         viewModelScope.launch {
@@ -64,6 +84,10 @@ class SessionViewModel @Inject constructor(
                 _latestSession.value = it.toSessionData()
             }
         }
+    }
+
+    fun logout() {
+        viewModelScope.launch { sessionRepository.logout() }
     }
 
     private fun SessionEntity.toSessionData(): SessionData {

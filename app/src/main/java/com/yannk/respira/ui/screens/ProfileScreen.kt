@@ -45,20 +45,22 @@ import com.yannk.respira.ui.navigation.Routes
 import com.yannk.respira.ui.theme.AzulClaro
 import com.yannk.respira.ui.theme.ButtonColor
 import com.yannk.respira.ui.theme.TextColor
+import com.yannk.respira.ui.viewmodel.SessionViewModel
 import com.yannk.respira.ui.viewmodel.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
-    viewModel: UserViewModel = hiltViewModel()
+    userViewModel: UserViewModel = hiltViewModel(),
+    sessionViewModel: SessionViewModel = hiltViewModel()
 ) {
-    val userName by viewModel.userName.collectAsState()
-    val userEmail by viewModel.userEmail.collectAsState()
+    val userName by userViewModel.userName.collectAsState()
+    val userEmail by userViewModel.userEmail.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.fetchUserName()
-        viewModel.fetchUserEmail()
+        userViewModel.fetchUserName()
+        userViewModel.fetchUserEmail()
     }
 
     Scaffold(
@@ -148,7 +150,8 @@ fun ProfileScreen(
                     icon = Icons.Default.Logout,
                     text = "Sair",
                     onClick = {
-                        viewModel.logout()
+                        userViewModel.logout()
+                        sessionViewModel.logout()
                         navController.navigate(Routes.WELCOME) {
                             popUpTo(Routes.WELCOME) { inclusive = true }
                         }
