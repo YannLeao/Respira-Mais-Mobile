@@ -22,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -53,7 +52,7 @@ fun AmbientAnalysisDialog(
         Column(
             modifier = modifier
                 .width(280.dp)
-                .background(Color.White, RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colorScheme.background, RoundedCornerShape(12.dp))
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -69,7 +68,7 @@ fun AmbientAnalysisDialog(
             Text(
                 text = "Analisando Ambiente",
                 style = MaterialTheme.typography.titleMedium,
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.secondary,
                 fontWeight = FontWeight.Medium
             )
 
@@ -86,7 +85,7 @@ fun AmbientAnalysisDialog(
             Text(
                 text = "Aguarde enquanto analisamos\no ambiente sonoro...",
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color.Black.copy(alpha = 0.8f),
+                color = MaterialTheme.colorScheme.secondary,
                 textAlign = TextAlign.Center
             )
 
