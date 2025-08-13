@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import javax.inject.Inject
 
@@ -48,7 +47,7 @@ class SleepMonitoringService : LifecycleService() {
             coroutineScope.launch {
                 while (isRunning) {
                     val file = gravarWav(applicationContext)
-                    enviarAudio(file)
+                    enviarAudio(file, sessionId!!)
                     delay(10000)
                 }
             }
@@ -63,18 +62,17 @@ class SleepMonitoringService : LifecycleService() {
         coroutineScope.cancel()
     }
 
-    private fun enviarAudio(file: File) {
+    private fun enviarAudio(file: File, sessionId: Int) {
         val tokenHeader = "Bearer $token"
         val requestFile = file.asRequestBody("audio/wav".toMediaTypeOrNull())
         val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
-        val sessionIdBody = sessionId!!.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
         coroutineScope.launch {
             try {
                 val response = apiClient.apiService.monitorarAudio(
                     token = tokenHeader,
                     file = filePart,
-                    sessionId = sessionIdBody)
+                    sessionId = sessionId)
                 Log.d("SleepService", "Áudio enviado: ${response.isSuccessful}")
             } catch (e: Exception) {
                 Log.e("SleepService", "Erro ao enviar áudio", e)

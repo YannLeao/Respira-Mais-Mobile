@@ -7,7 +7,6 @@ import com.yannk.respira.data.remote.model.response.SessionReportResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import javax.inject.Inject
 
@@ -28,15 +27,18 @@ class SessionRepository @Inject constructor(
     suspend fun analisarAmbiente(token: String, sessionId: Int, file: File): String {
         val requestFile = file.asRequestBody("audio/wav".toMediaTypeOrNull())
         val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
-        val sessionIdBody = sessionId.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
-        val response = apiClient.apiService.analisarAmbiente("Bearer $token", filePart, sessionIdBody)
+        val response = apiClient.apiService.analisarAmbiente("Bearer $token", filePart, sessionId)
         return response.body()?.status ?: "erro"
     }
 
     suspend fun finalizarSessao(token: String, sessionId: Int): SessionReportResponse {
         val response = apiClient.apiService.finalizarSessao("Bearer $token", sessionId)
         return response.body() ?: throw Exception("Erro ao finalizar sessão")
+    }
+
+    suspend fun logout() {
+        sessionDao.clearAll()
     }
 
     suspend fun salvarSessao(report: SessionReportResponse) {
