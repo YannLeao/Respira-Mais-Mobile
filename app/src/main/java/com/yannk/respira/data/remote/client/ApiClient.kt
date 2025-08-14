@@ -1,6 +1,5 @@
 package com.yannk.respira.data.remote.client
 
-import com.yannk.respira.data.remote.api.ApiService
 import com.yannk.respira.data.remote.api.AuthApiService
 import com.yannk.respira.data.remote.api.MonitoringApiService
 import com.yannk.respira.data.remote.api.ReportApiService

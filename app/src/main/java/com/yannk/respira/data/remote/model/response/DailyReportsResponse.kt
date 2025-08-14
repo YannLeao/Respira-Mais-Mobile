@@ -1,6 +1,6 @@
-package com.yannk.respira.data.local.model
+package com.yannk.respira.data.remote.model.response
 
-data class DailySummary(
+data class DailyReportsResponse(
     val data: String,
     val total_sessoes: Int,
     val total_tosse: Int,

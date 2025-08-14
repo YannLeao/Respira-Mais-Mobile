@@ -1,308 +1,284 @@
 package com.yannk.respira.ui.components
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.Event
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.yannk.respira.data.local.model.domain.WeeklyReport
+import com.yannk.respira.ui.theme.CoughingColor
+import com.yannk.respira.ui.theme.OtherColor
+import com.yannk.respira.ui.theme.SneezingColor
 import com.yannk.respira.ui.viewmodel.ReportsViewModel
+import com.yannk.respira.ui.viewmodel.ReportsViewModel.WeeklyReportState
+import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.Locale
 
 @Composable
 fun WeeklyReports(
     modifier: Modifier = Modifier,
     viewModel: ReportsViewModel = hiltViewModel()
 ) {
+    val weeklyState by viewModel.weeklyReport.collectAsState()
+    val endDate = remember { LocalDate.now() }
+    val startDate = remember { endDate.minusDays(6) }
 
-    val weeklyData = listOf(
-        "Seg" to 150f,
-        "Ter" to 280f,
-        "Qua" to 90f,
-        "Qui" to 210f,
-        "Sex" to 180f,
-        "Sáb" to 300f,
-        "Dom" to 120f
-    )
+    LaunchedEffect(Unit) {
+        viewModel.loadWeeklyReport()
+    }
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(32.dp)
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        // Header com título e período
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                text = "Relatório Semanal",
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold
-            )
+        // Header
+        ReportHeader(
+            title = "Relatório Semanal",
+            subtitle = "${startDate.dayOfMonth} a ${endDate.dayOfMonth} de " +
+                    "${endDate.month.getDisplayName(TextStyle.FULL, Locale("pt", "BR"))}"
+        )
 
-            Text(
-                text = "De 08 a 14 de Julho de 2024",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.secondary
-            )
-        }
+        when (weeklyState) {
+            is WeeklyReportState.Success -> {
+                val report = (weeklyState as WeeklyReportState.Success).report
 
-        // Gráfico aprimorado
-        ElevatedCard(
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = "Atividade Sonora",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
+                // Gráfico de Linha
+                WeeklyChartCard(report)
 
-                WeeklyChart(
-                    data = weeklyData,
-                    modifier = Modifier.height(220.dp)
-                )
+                // Métricas Resumo
+                WeeklySummaryMetrics(report)
+            }
+            is WeeklyReportState.Error -> {
+                ErrorMessage((weeklyState as WeeklyReportState.Error).message)
+            }
+            WeeklyReportState.Loading -> {
+                LoadingPlaceholder()
             }
         }
+    }
+}
 
-        // Métricas em Grid
-        GridMetrics(
-            totalEvents = weeklyData.sumOf { it.second.toInt() },
-            avgDuration = weeklyData.map { it.second }.average().toFloat(),
-            qualityScore = calculateQualityScore(weeklyData)
+@Composable
+private fun WeeklyChartCard(report: WeeklyReport) {
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "Atividade por Dia",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            // Gráfico com 3 linhas (tosse, espirro, outros)
+            MultiLineChart(
+                coughData = report.dailyReports.map { it.totalCough.toFloat() },
+                sneezeData = report.dailyReports.map { it.totalSneeze.toFloat() },
+                otherData = report.dailyReports.map { it.totalOtherEvents.toFloat() },
+                dayLabels = report.dailyReports.map { it.date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale("pt", "BR")) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun WeeklySummaryMetrics(report: WeeklyReport) {
+    val totalEvents = report.totalCough + report.totalSneeze + report.totalOtherEvents
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // Total de Sessões
+        MetricCard(
+            modifier = Modifier.weight(1f),
+            icon = Icons.Default.List,
+            title = "Sessões",
+            value = report.totalSessions.toString(),
+            color = MaterialTheme.colorScheme.primary
+        )
+
+        // Total de Eventos
+        MetricCard(
+            modifier = Modifier.weight(1f),
+            icon = Icons.Default.Event,
+            title = "Eventos",
+            value = totalEvents.toString(),
+            color = MaterialTheme.colorScheme.primary
+        )
+    }
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // Ambiente Predominante
+        MetricCard(
+            modifier = Modifier.weight(1f),
+            icon = Icons.Default.Place,
+            title = "Ambiente",
+            value = report.predominantEnvironment.capitalize(),
+            color = when(report.predominantEnvironment.lowercase()) {
+                "silencioso" -> Color(0xFF4CAF50)
+                "moderado" -> Color(0xFFFFC107)
+                "ruidoso" -> Color(0xFFF44336)
+                else -> MaterialTheme.colorScheme.secondary
+            }
+        )
+
+        // Duração Total
+        MetricCard(
+            modifier = Modifier.weight(1f),
+            icon = Icons.Default.AccessTime,
+            title = "Duração",
+            value = "${report.totalDurationMinutes} min",
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }
 
 @Composable
-private fun GridMetrics(
-    totalEvents: Int,
-    avgDuration: Float,
-    qualityScore: Float
-) {
-    val metrics = listOf(
-        Triple("Total de Eventos", "$totalEvents", MaterialTheme.colorScheme.primary),
-        Triple("Duração Média", "${"%.1f".format(avgDuration)}h", MaterialTheme.colorScheme.secondary),
-        Triple("Qualidade do Sono", "${(qualityScore * 100).toInt()}%", getQualityColor(qualityScore))
-    )
-
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        modifier = Modifier.fillMaxWidth().height(300.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        items(metrics.size) { index ->
-            val (title, value, color) = metrics[index]
-            MetricCard(title, value, color)
-        }
-    }
-}
-
-@Composable
-private fun MetricCard(
-    title: String,
-    value: String,
-    color: Color
-) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = value,
-                style = MaterialTheme.typography.headlineSmall,
-                color = color,
-                fontWeight = FontWeight.Bold
-            )
-        }
-    }
-}
-
-@Composable
-fun WeeklyChart(
-    data: List<Pair<String, Float>>,
+private fun MultiLineChart(
+    coughData: List<Float>,
+    sneezeData: List<Float>,
+    otherData: List<Float>,
+    dayLabels: List<String>,
     modifier: Modifier = Modifier,
-    chartHeight: Dp = 200.dp,
-    fillGradient: Boolean = true
+    chartHeight: Dp = 200.dp
 ) {
-    val lineColor = MaterialTheme.colorScheme.primary
-    val labelColor = MaterialTheme.colorScheme.onSurfaceVariant
-
-
-    if (data.isEmpty()) {
-        PlaceholderChart()
-        return
-    }
-
-    val maxValue = data.maxOfOrNull { it.second } ?: 1f
-    val minValue = data.minOfOrNull { it.second } ?: 0f
-    val range = maxValue - minValue
+    val allData = coughData + sneezeData + otherData
+    val maxValue = allData.maxOrNull() ?: 1f
+    val minValue = allData.minOrNull() ?: 0f
 
     Canvas(
         modifier = modifier
             .fillMaxWidth()
-            .height(chartHeight + 40.dp) // Espaço para rótulos
+            .height(chartHeight + 40.dp)
     ) {
-        val paddingStart = 24.dp.toPx()
-        val paddingEnd = 8.dp.toPx()
+        val paddingStart = 32.dp.toPx()
+        val paddingEnd = 16.dp.toPx()
         val usableWidth = size.width - paddingStart - paddingEnd
-        val itemWidth = usableWidth / (data.size - 1)
-        val zeroLine = size.height * 0.9f // Linha base (90% da altura)
+        val itemWidth = usableWidth / (dayLabels.size - 1).coerceAtLeast(1)
+        val zeroLine = size.height * 0.8f
 
-        // Converte os dados em pontos (x,y)
-        val points = data.mapIndexed { index, (_, value) ->
-            val x = paddingStart + (index * itemWidth)
-            val y = zeroLine - ((value - minValue) / range) * (size.height * 0.8f)
-            Offset(x, y)
+        // Função auxiliar para converter dados em pontos
+        fun dataToPoints(data: List<Float>): List<Offset> {
+            return data.mapIndexed { index, value ->
+                val x = paddingStart + (index * itemWidth)
+                val y = zeroLine - ((value - minValue) / (maxValue - minValue).coerceAtLeast(1f)) * (size.height * 0.7f)
+                Offset(x, y)
+            }
         }
 
-        // Preenchimento abaixo da linha (opcional)
-        if (fillGradient) {
-            val path = Path().apply {
-                moveTo(paddingStart, zeroLine)
-                points.forEach { lineTo(it.x, it.y) }
-                lineTo(paddingStart + usableWidth, zeroLine)
-                close()
-            }
+        // Desenha as linhas
+        listOf(
+            Triple(coughData, CoughingColor, "Tosse"),
+            Triple(sneezeData, SneezingColor, "Espirro"),
+            Triple(otherData, OtherColor, "Outros")
+        ).forEach { (data, color, _) ->
+            val points = dataToPoints(data)
 
             drawPath(
-                path = path,
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        lineColor.copy(alpha = 0.2f),
-                        lineColor.copy(alpha = 0.05f)
-                    ),
-                    startY = zeroLine,
-                    endY = 0f
+                path = Path().apply {
+                    points.forEachIndexed { index, point ->
+                        if (index == 0) moveTo(point.x, point.y)
+                        else lineTo(point.x, point.y)
+                    }
+                },
+                color = color,
+                style = Stroke(
+                    width = 3.dp.toPx(),
+                    cap = StrokeCap.Round,
+                    join = StrokeJoin.Round
                 )
             )
-        }
 
-        // Desenha a linha principal
-        drawPath(
-            path = Path().apply {
-                points.forEachIndexed { index, point ->
-                    if (index == 0) moveTo(point.x, point.y)
-                    else lineTo(point.x, point.y)
-                }
-            },
-            color = lineColor,
-            style = Stroke(
-                width = 3.dp.toPx(),
-                cap = StrokeCap.Round,
-                join = StrokeJoin.Round
-            )
-        )
-
-        // Desenha os pontos de dados
-        points.forEach { point ->
-            drawCircle(
-                color = lineColor,
-                radius = 4.dp.toPx(),
-                center = point
-            )
-        }
-
-        // Desenha os rótulos dos dias
-        data.forEachIndexed { index, (day, _) ->
-            val x = paddingStart + (index * itemWidth)
-            drawContext.canvas.nativeCanvas.apply {
-                drawText(
-                    day.take(3),
-                    x,
-                    size.height - 8.dp.toPx(),
-                    android.graphics.Paint().apply {
-                        color = labelColor.toArgb()
-                        textSize = 12.sp.toPx()
-                        textAlign = android.graphics.Paint.Align.CENTER
-                    }
+            // Pontos nos dados
+            points.forEach { point ->
+                drawCircle(
+                    color = color,
+                    radius = 4.dp.toPx(),
+                    center = point
                 )
             }
         }
-    }
-}
 
-@Composable
-private fun PlaceholderChart() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .background(Color.LightGray.copy(alpha = 0.1f))
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "Sem dados disponíveis",
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
-}
+        // Rótulos dos dias
+        val textPaint = Paint().asFrameworkPaint().apply {
+            color = Color.DarkGray.toArgb()
+            textSize = 12.sp.toPx()
+            textAlign = android.graphics.Paint.Align.CENTER
+        }
 
-private fun calculateQualityScore(data: List<Pair<String, Float>>): Float {
-    val total = data.sumOf { it.second.toDouble() }
-    val avg = total / data.size
-    return when {
-        avg < 100 -> 0.9f
-        avg < 200 -> 0.7f
-        else -> 0.5f
-    }
-}
+        dayLabels.forEachIndexed { index, day ->
+            val x = paddingStart + (index * itemWidth)
+            drawContext.canvas.nativeCanvas.drawText(
+                day.take(3).uppercase(),
+                x,
+                size.height - 8.dp.toPx(),
+                textPaint
+            )
+        }
 
-@Composable
-private fun getQualityColor(score: Float): Color {
-    return when {
-        score >= 0.8f -> Color(0xFF4CAF50) // Verde (cor semântica universal)
-        score >= 0.5f -> Color(0xFFFFC107) // Âmbar (cor semântica universal)
-        else -> MaterialTheme.colorScheme.error // Vermelho (usando a cor de erro do tema)
+        // Legenda
+        val legendPaint = Paint().asFrameworkPaint().apply {
+            textSize = 14.sp.toPx()
+            textAlign = android.graphics.Paint.Align.LEFT
+        }
+
+        listOf(
+            Triple(CoughingColor, "Tosse", 16.dp),
+            Triple(SneezingColor, "Espirro", 32.dp),
+            Triple(OtherColor, "Outros", 48.dp)
+        ).forEach { (color, text, offset) ->
+            legendPaint.color = color.toArgb()
+            drawContext.canvas.nativeCanvas.drawText(
+                text,
+                paddingStart,
+                offset.toPx(),
+                legendPaint
+            )
+        }
     }
 }
 

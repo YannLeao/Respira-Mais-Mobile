@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -38,7 +39,7 @@ fun EmptyChart(
             Icon(
                 imageVector = Icons.Outlined.InsertChart,
                 contentDescription = null,
-                modifier = Modifier.size(200.dp),
+                modifier = Modifier.size(100.dp),
                 tint = Color.LightGray
             )
         }
@@ -49,10 +50,17 @@ fun EmptyChart(
             text = if (isEmptySession) {
                 "Nenhuma sessão realizada"
             } else {
-                "Nenhum evento registrado na última sessão"
+                "Nenhum evento registrado nesse dia"
             },
             style = MaterialTheme.typography.bodyMedium,
             color = Color.Gray
         )
     }
+}
+
+@Preview
+@Composable
+private fun Empty() {
+    EmptyChart(modifier = Modifier)
+
 }

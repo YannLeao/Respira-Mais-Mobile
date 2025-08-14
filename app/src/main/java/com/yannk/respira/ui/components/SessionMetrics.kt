@@ -154,7 +154,7 @@ private fun TimeInfoItem(title: String, value: String) {
 }
 
 @Composable
-private fun MetricCard(
+fun MetricCard(
     modifier: Modifier = Modifier,
     icon: ImageVector,
     title: String,

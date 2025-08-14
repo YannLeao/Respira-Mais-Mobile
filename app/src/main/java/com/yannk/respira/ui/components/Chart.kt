@@ -9,14 +9,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.InsertChart
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,7 +27,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.yannk.respira.data.local.model.SessionData
 import com.yannk.respira.ui.theme.CoughingColor
 import com.yannk.respira.ui.theme.OtherColor
 import com.yannk.respira.ui.theme.SneezingColor
@@ -47,9 +42,9 @@ fun DonutChart(
 ) {
     // Prepara os dados para o gráfico
     val data = listOf(
-        EventStat("Tosse", coughCount, CoughingColor),
-        EventStat("Espirro", sneezeCount, SneezingColor),
-        EventStat("Outros", otherEvents, OtherColor)
+        ChartData("Tosse", coughCount, CoughingColor),
+        ChartData("Espirro", sneezeCount, SneezingColor),
+        ChartData("Outros", otherEvents, OtherColor)
     )
 
     val totalEvents = data.sumOf { it.count }
@@ -146,7 +141,7 @@ fun DonutChart(
 }
 
 @Composable
-private fun Legend(data: List<EventStat>) {
+private fun Legend(data: List<ChartData>) {
     Column(
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
@@ -157,7 +152,7 @@ private fun Legend(data: List<EventStat>) {
 }
 
 @Composable
-private fun LegendItem(stat: EventStat) {
+private fun LegendItem(stat: ChartData) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
@@ -173,7 +168,7 @@ private fun LegendItem(stat: EventStat) {
     }
 }
 
-data class EventStat(
+data class ChartData(
     val label: String,
     val count: Int,
     val color: Color
