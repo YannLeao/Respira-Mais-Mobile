@@ -6,10 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yannk.respira.data.repository.UserRepository
 import com.yannk.respira.service.utils.gravarWav
-import com.yannk.respira.ui.components.AudioStat
-import com.yannk.respira.ui.theme.CoughingColor
-import com.yannk.respira.ui.theme.OtherColor
-import com.yannk.respira.ui.theme.SneezingColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

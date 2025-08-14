@@ -40,8 +40,8 @@ enum class SleepQuality(val label: String, val color: Color) {
 }
 
 enum class SleepEnvironment(val label: String, val color: Color) {
-    SILENT("silencioso", Color(0xFF4CAF50)),
-    MODERATE("moderado", Color(0xFFFFC107)),
-    NOISY("ruidoso", Color(0xFFF44336)),
-    UNKNOWN("desconhecido", Color.Gray)
+    SILENT("Silencioso", Color(0xFF4CAF50)),
+    MODERATE("Moderado", Color(0xFFFFC107)),
+    NOISY("Ruidoso", Color(0xFFF44336)),
+    UNKNOWN("Desconhecido", Color.Gray)
 }

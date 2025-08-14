@@ -95,10 +95,10 @@ fun MonthlyReports(
                     )
 
                     val chartData = getChartDataForDay(day)
-                    DonutChart(
-                        data = chartData,
-                        modifier = Modifier.size(180.dp)
-                    )
+//                    DonutChart(
+//                        data = chartData,
+//                        modifier = Modifier.size(180.dp)
+//                    )
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -245,3 +245,5 @@ private fun getChartDataForDay(day: Int): List<AudioStat> {
         )
     }
 }
+
+data class AudioStat(val label: String, val percentage: Float, val color: Color)

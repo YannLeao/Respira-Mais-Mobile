@@ -9,10 +9,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.InsertChart
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,29 +27,42 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.yannk.respira.data.local.model.SessionData
 import com.yannk.respira.ui.theme.CoughingColor
 import com.yannk.respira.ui.theme.OtherColor
 import com.yannk.respira.ui.theme.SneezingColor
 
-/**
- * Exibe um gráfico de pizza (Donut) com uma legenda customizável.
- *
- * @param data A lista de dados `AudioStat` para desenhar no gráfico.
- * @param modifier O Modifier a ser aplicado ao container principal.
- * @param chartSize O diâmetro do gráfico. O valor padrão é 200.dp.
- * @param legendOnSide Se `true`, a legenda será posicionada ao lado do gráfico (layout em Row).
- * Se `false` (padrão), a legenda ficará abaixo do gráfico (layout em Column).
- */
 @Composable
 fun DonutChart(
-    data: List<AudioStat>,
+    sessionData: SessionData,
     modifier: Modifier = Modifier,
     chartSize: Dp = 200.dp,
     legendOnSide: Boolean = false
 ) {
+    // Prepara os dados para o gráfico
+    val data = listOf(
+        EventStat("Tosse", sessionData.coughCount, CoughingColor),
+        EventStat("Espirro", sessionData.sneezeCount, SneezingColor),
+        EventStat("Outros", sessionData.otherEvents, OtherColor)
+    )
+
+    val totalEvents = data.sumOf { it.count }
+
+    // Componente para mostrar quando não há dados
+    if (totalEvents == 0) {
+        EmptyChart(
+            modifier = modifier,
+            chartSize = chartSize,
+            legendOnSide = legendOnSide,
+            isEmptySession = sessionData == SessionData.empty()
+        )
+        return
+    }
+
     // Componente interno que desenha apenas o gráfico no Canvas
     val chart = @Composable {
         Box(
@@ -53,7 +70,6 @@ fun DonutChart(
             contentAlignment = Alignment.Center
         ) {
             Canvas(modifier = Modifier.fillMaxSize()) {
-                val total = data.sumOf { it.percentage.toDouble() }.toFloat()
                 var startAngle = -90f
                 val radius = size.minDimension / 2.5f
                 val center = Offset(size.width / 2, size.height / 2)
@@ -61,7 +77,7 @@ fun DonutChart(
 
                 // Desenha o fundo cinza do gráfico
                 drawArc(
-                    color = Color.LightGray.copy(alpha = 0.3f),
+                    color = Color.White.copy(alpha = 0.3f),
                     startAngle = -90f,
                     sweepAngle = 360f,
                     useCenter = false,
@@ -72,19 +88,28 @@ fun DonutChart(
 
                 // Desenha cada fatia do gráfico
                 data.forEach { stat ->
-                    val sweepAngle = (stat.percentage / total) * 360f
-                    drawArc(
-                        color = stat.color,
-                        startAngle = startAngle,
-                        sweepAngle = sweepAngle,
-                        useCenter = false,
-                        topLeft = Offset(center.x - radius, center.y - radius),
-                        size = Size(radius * 2, radius * 2),
-                        style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
-                    )
-                    startAngle += sweepAngle
+                    if (stat.count > 0) {
+                        val sweepAngle = (stat.count.toFloat() / totalEvents) * 360f
+                        drawArc(
+                            color = stat.color,
+                            startAngle = startAngle,
+                            sweepAngle = sweepAngle,
+                            useCenter = false,
+                            topLeft = Offset(center.x - radius, center.y - radius),
+                            size = Size(radius * 2, radius * 2),
+                            style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
+                        )
+                        startAngle += sweepAngle
+                    }
                 }
             }
+
+            // Mostra o total no centro
+            Text(
+                text = "$totalEvents",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 
@@ -93,9 +118,8 @@ fun DonutChart(
         Legend(data = data)
     }
 
-    // A lógica principal que decide o layout
+    // Layout do gráfico com legenda
     if (legendOnSide) {
-        // Layout com legenda ao lado
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -108,7 +132,6 @@ fun DonutChart(
             legend()
         }
     } else {
-        // Layout padrão com legenda abaixo
         Column(
             modifier = modifier
                 .fillMaxWidth()
@@ -122,11 +145,47 @@ fun DonutChart(
     }
 }
 
-/**
- * Um Composable privado que renderiza a lista de itens da legenda.
- */
 @Composable
-private fun Legend(data: List<AudioStat>) {
+private fun EmptyChart(
+    modifier: Modifier,
+    chartSize: Dp,
+    legendOnSide: Boolean,
+    isEmptySession: Boolean
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier.size(chartSize),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.InsertChart,
+                contentDescription = null,
+                modifier = Modifier.size(200.dp),
+                tint = Color.LightGray
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = if (isEmptySession) {
+                "Nenhuma sessão realizada"
+            } else {
+                "Nenhum evento registrado na última sessão"
+            },
+            style = MaterialTheme.typography.bodyMedium,
+            color = Color.Gray
+        )
+    }
+}
+
+@Composable
+private fun Legend(data: List<EventStat>) {
     Column(
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
@@ -136,11 +195,8 @@ private fun Legend(data: List<AudioStat>) {
     }
 }
 
-/**
- * Um Composable privado que renderiza um único item da legenda (cor + texto).
- */
 @Composable
-private fun LegendItem(stat: AudioStat) {
+private fun LegendItem(stat: EventStat) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
@@ -149,17 +205,15 @@ private fun LegendItem(stat: AudioStat) {
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = "${stat.label}: ${stat.percentage.toInt()}%",
+            text = "${stat.label}: ${stat.count}",
             fontSize = 14.sp,
-            color =  MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }
 
-
-data class AudioStat(val label: String, val percentage: Float, val color: Color)
-val audioStats = listOf(
-    AudioStat("Espirro", 35f, SneezingColor),
-    AudioStat("Tosse", 45f, CoughingColor),
-    AudioStat("Outros", 20f, OtherColor)
+data class EventStat(
+    val label: String,
+    val count: Int,
+    val color: Color
 )

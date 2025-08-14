@@ -22,7 +22,7 @@ fun gravarWav(context: Context, durationInSeconds: Int = 5): File {
         throw SecurityException("Permissão RECORD_AUDIO não concedida")
     }
 
-    val sampleRate = 44100
+    val sampleRate = 16000
     val channelConfig = AudioFormat.CHANNEL_IN_MONO
     val audioFormat = AudioFormat.ENCODING_PCM_16BIT
 

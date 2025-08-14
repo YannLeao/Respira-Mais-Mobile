@@ -39,7 +39,10 @@ fun MonitoringStartedDialog(
         Column(
             modifier = modifier
                 .width(280.dp)
-                .background(Color.White, RoundedCornerShape(12.dp))
+                .background(
+                    MaterialTheme.colorScheme.background,
+                    RoundedCornerShape(12.dp)
+                )
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -75,7 +78,7 @@ fun MonitoringStartedDialog(
                 modifier = Modifier.width(120.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = Color.White
+                    contentColor = MaterialTheme.colorScheme.background
                 )
             ) {
                 Text("Entendi")

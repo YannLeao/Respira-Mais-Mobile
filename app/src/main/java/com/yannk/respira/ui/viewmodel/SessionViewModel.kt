@@ -13,10 +13,6 @@ import com.yannk.respira.data.repository.SessionRepository
 import com.yannk.respira.data.repository.UserRepository
 import com.yannk.respira.service.SleepMonitoringService
 import com.yannk.respira.service.utils.formatTime
-import com.yannk.respira.ui.components.AudioStat
-import com.yannk.respira.ui.theme.CoughingColor
-import com.yannk.respira.ui.theme.OtherColor
-import com.yannk.respira.ui.theme.SneezingColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -96,13 +92,6 @@ class SessionViewModel @Inject constructor(
         viewModelScope.launch { sessionRepository.logout() }
     }
 
-    // Dados do gráfico (mockados inicialmente)
-    val audioStats = listOf(
-        AudioStat("Tosse", 45f, CoughingColor),
-        AudioStat("Espirro", 35f, SneezingColor),
-        AudioStat("Outros", 20f, OtherColor)
-    )
-
     private fun SessionEntity.toSessionData(): SessionData {
         return SessionData(
             id = sessionId.toString(),
@@ -112,9 +101,9 @@ class SessionViewModel @Inject constructor(
             duration = calculateDuration(dataHoraInicio, dataHoraFim),
             quality = estimateSleepQuality(quantidadeTosse, quantidadeEspirro, outrosEventos),
             environment = when(ambiente.lowercase()) {
-                "silent" -> SleepEnvironment.SILENT
-                "moderate" -> SleepEnvironment.MODERATE
-                "noisy" -> SleepEnvironment.NOISY
+                "silencioso" -> SleepEnvironment.SILENT
+                "moderado" -> SleepEnvironment.MODERATE
+                "ruidoso" -> SleepEnvironment.NOISY
                 else -> SleepEnvironment.UNKNOWN
             },
             isActive = false,
