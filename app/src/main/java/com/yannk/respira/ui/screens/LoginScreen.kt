@@ -12,7 +12,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.yannk.respira.R
-import com.yannk.respira.ui.components.*
+import com.yannk.respira.ui.components.buttons.BigButton
+import com.yannk.respira.ui.components.buttons.ButtonsLogin
+import com.yannk.respira.ui.components.dialogs.ErrorDialog
+import com.yannk.respira.ui.components.dialogs.LoadingDialog
+import com.yannk.respira.ui.components.home.FundoImg
+import com.yannk.respira.ui.components.home.SubscribeField
+import com.yannk.respira.ui.components.home.TextInput
+import com.yannk.respira.ui.components.home.VectorImg
 import com.yannk.respira.ui.navigation.Routes
 import com.yannk.respira.ui.theme.RespiraTheme // Importe seu tema
 import com.yannk.respira.ui.viewmodel.UserViewModel
@@ -56,9 +63,16 @@ fun LoginScreen(
                     Spacer(modifier = Modifier.height(15.dp))
                     TextInput(label = "Email", value = email, onValueChange = { email = it })
                     Spacer(modifier = Modifier.height(10.dp))
-                    TextInput(label = "Senha", isPassword = true, value = password, onValueChange = { password = it })
+                    TextInput(
+                        label = "Senha",
+                        isPassword = true,
+                        value = password,
+                        onValueChange = { password = it })
                     Spacer(modifier = Modifier.height(42.dp))
-                    BigButton(text = "Sign-up", enabled = isEnabled, onClick = { viewModel.login(email, password) })
+                    BigButton(
+                        text = "Sign-up",
+                        enabled = isEnabled,
+                        onClick = { viewModel.login(email, password) })
                     Spacer(modifier = Modifier.height(20.dp))
                     SubscribeField(
                         firstText = "Entre com",
@@ -82,7 +96,9 @@ fun LoginScreen(
                             }
                         }
                     }
-                    is ResultState.Error -> ErrorDialog(message = loginState.message, onDismiss = { viewModel.clearLoginState() })
+                    is ResultState.Error -> ErrorDialog(
+                        message = loginState.message,
+                        onDismiss = { viewModel.clearLoginState() })
                     null -> Unit
                 }
             }

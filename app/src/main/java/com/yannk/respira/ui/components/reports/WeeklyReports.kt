@@ -1,4 +1,4 @@
-package com.yannk.respira.ui.components
+package com.yannk.respira.ui.components.reports
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
@@ -158,7 +158,7 @@ private fun WeeklySummaryMetrics(report: WeeklyReport) {
             icon = Icons.Default.Place,
             title = "Ambiente",
             value = report.predominantEnvironment.capitalize(),
-            color = when(report.predominantEnvironment.lowercase()) {
+            color = when (report.predominantEnvironment.lowercase()) {
                 "silencioso" -> Color(0xFF4CAF50)
                 "moderado" -> Color(0xFFFFC107)
                 "ruidoso" -> Color(0xFFF44336)

@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.yannk.respira.R
-import com.yannk.respira.ui.components.FundoImg
-import com.yannk.respira.ui.components.VectorImg
+import com.yannk.respira.ui.components.home.FundoImg
+import com.yannk.respira.ui.components.home.VectorImg
 import com.yannk.respira.ui.navigation.Routes
 import com.yannk.respira.ui.theme.SecondaryLight
 

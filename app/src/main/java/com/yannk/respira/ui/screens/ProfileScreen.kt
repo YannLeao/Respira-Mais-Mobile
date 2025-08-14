@@ -35,13 +35,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.yannk.respira.ui.components.BottomBar
+import com.yannk.respira.ui.components.buttons.BottomBar
 import com.yannk.respira.ui.navigation.Routes
+import com.yannk.respira.ui.viewmodel.ReportsViewModel
 import com.yannk.respira.ui.viewmodel.SessionViewModel
 import com.yannk.respira.ui.viewmodel.UserViewModel
 
@@ -50,7 +50,8 @@ import com.yannk.respira.ui.viewmodel.UserViewModel
 fun ProfileScreen(
     navController: NavHostController,
     userViewModel: UserViewModel = hiltViewModel(),
-    sessionViewModel: SessionViewModel = hiltViewModel()
+    sessionViewModel: SessionViewModel = hiltViewModel(),
+    reportsViewModel: ReportsViewModel = hiltViewModel()
 ) {
     val userName by userViewModel.userName.collectAsState()
     val userEmail by userViewModel.userEmail.collectAsState()
@@ -149,6 +150,7 @@ fun ProfileScreen(
                     onClick = {
                         userViewModel.logout()
                         sessionViewModel.logout()
+                        reportsViewModel.logout()
                         navController.navigate(Routes.WELCOME) {
                             popUpTo(Routes.WELCOME) { inclusive = true }
                         }

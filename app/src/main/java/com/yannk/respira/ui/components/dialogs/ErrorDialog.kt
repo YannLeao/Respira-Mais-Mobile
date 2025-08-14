@@ -1,4 +1,4 @@
-package com.yannk.respira.ui.components
+package com.yannk.respira.ui.components.dialogs
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

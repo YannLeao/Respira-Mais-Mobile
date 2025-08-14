@@ -1,11 +1,9 @@
 package com.yannk.respira.data.remote.model.response
 
-import com.yannk.respira.data.local.model.SessionEntity
-
 data class SessionStartResponse(
-    val session_id: Int,
+    val sessionId: Int,
     val ambiente: String,
-    val data_hora_inicio: String
+    val dataHoraInicio: String
 )
 
 data class MonitoringResponse(
@@ -14,11 +12,11 @@ data class MonitoringResponse(
 )
 
 data class SessionReportResponse(
-    val session_id: Int,
+    val sessionId: Int,
     val ambiente: String,
-    val quantidade_tosse: Int,
-    val quantidade_espirro: Int,
-    val outros_eventos: Int,
-    val data_hora_inicio: String,
-    val data_hora_fim: String
+    val quantidadeTosse: Int,
+    val quantidadeEspirro: Int,
+    val outrosEventos: Int,
+    val dataHoraInicio: String,
+    val dataHoraFim: String
 )

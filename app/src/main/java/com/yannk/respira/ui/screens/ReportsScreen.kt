@@ -17,16 +17,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.yannk.respira.ui.components.BottomBar
-import com.yannk.respira.ui.components.MonthlyReports
-import com.yannk.respira.ui.components.TopBar
-import com.yannk.respira.ui.components.WeeklyReports
+import com.yannk.respira.ui.components.buttons.BottomBar
+import com.yannk.respira.ui.components.reports.MonthlyReports
+import com.yannk.respira.ui.components.home.TopBar
+import com.yannk.respira.ui.components.reports.WeeklyReports
 import com.yannk.respira.ui.navigation.Routes
 import com.yannk.respira.ui.viewmodel.ReportsViewModel
 

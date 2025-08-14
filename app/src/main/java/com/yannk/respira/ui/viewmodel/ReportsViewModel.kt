@@ -128,6 +128,10 @@ class ReportsViewModel @Inject constructor(
         return candidates.firstOrNull() ?: "Nenhum"
     }
 
+    fun logout() {
+        viewModelScope.launch { repository.logout() }
+    }
+
     sealed class DailyReportState {
         object Loading : DailyReportState()
         data class Success(val report: DailyReport) : DailyReportState()

@@ -1,4 +1,4 @@
-package com.yannk.respira.ui.components
+package com.yannk.respira.ui.components.reports
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.yannk.respira.data.local.model.SessionData
+import com.yannk.respira.data.local.model.domain.SessionData
 import com.yannk.respira.service.utils.formatSessionDateTime
 
 

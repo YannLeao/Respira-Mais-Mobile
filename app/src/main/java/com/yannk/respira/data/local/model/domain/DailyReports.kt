@@ -2,7 +2,7 @@ package com.yannk.respira.data.local.model.domain
 
 import com.yannk.respira.data.local.model.DailyReportEntity
 import com.yannk.respira.data.remote.model.response.DailyReportsResponse
-import com.yannk.respira.ui.components.ChartData
+import com.yannk.respira.ui.components.reports.ChartData
 import com.yannk.respira.ui.theme.CoughingColor
 import com.yannk.respira.ui.theme.OtherColor
 import com.yannk.respira.ui.theme.SneezingColor
@@ -27,12 +27,12 @@ data class DailyReport(
 // Extensions para conversão
 fun DailyReportsResponse.toEntity(): DailyReportEntity = DailyReportEntity(
     date = data,
-    totalSessions = total_sessoes,
-    totalCough = total_tosse,
-    totalSneeze = total_espirro,
-    totalOtherEvents = total_outros_eventos,
-    predominantEnvironment = ambiente_predominante,
-    totalDurationMinutes = duracao_total_minutos
+    totalSessions = totalSessoes,
+    totalCough = totalTosse,
+    totalSneeze = totalEspirro,
+    totalOtherEvents = totalOutrosEventos,
+    predominantEnvironment = ambientePredominante,
+    totalDurationMinutes = duracaoTotalMinutos
 )
 
 fun DailyReportEntity.toDomain(): DailyReport = DailyReport(

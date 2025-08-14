@@ -45,7 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.yannk.respira.ui.components.BottomBar
+import com.yannk.respira.ui.components.buttons.BottomBar
 import com.yannk.respira.ui.navigation.Routes
 import com.yannk.respira.ui.viewmodel.ThemeViewModel
 

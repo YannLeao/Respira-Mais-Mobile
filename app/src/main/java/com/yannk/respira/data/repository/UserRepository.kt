@@ -19,7 +19,7 @@ class UserRepository @Inject constructor(
     suspend fun register(dto: UserDto): ResultState<String> {
         return try {
             val response = api.authService.register(dto)
-            preferences.saveToken(response.access_token)
+            preferences.saveToken(response.accessToken)
 
             val user = User(
                 id = response.user.id,
@@ -46,7 +46,7 @@ class UserRepository @Inject constructor(
     suspend fun login(loginDto: LoginDto): ResultState<String> {
         return try {
             val response = api.authService.login(loginDto)
-            preferences.saveToken(response.access_token)
+            preferences.saveToken(response.accessToken)
 
             val user = User(
                 id = response.user.id,

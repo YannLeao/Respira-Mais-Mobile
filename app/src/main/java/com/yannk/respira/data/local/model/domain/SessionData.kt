@@ -1,4 +1,4 @@
-package com.yannk.respira.data.local.model
+package com.yannk.respira.data.local.model.domain
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.yannk.respira.ui.components
+package com.yannk.respira.ui.components.buttons
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width

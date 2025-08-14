@@ -1,4 +1,4 @@
-package com.yannk.respira.ui.components
+package com.yannk.respira.ui.components.home
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh

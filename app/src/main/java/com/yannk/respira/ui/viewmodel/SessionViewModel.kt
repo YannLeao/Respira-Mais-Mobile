@@ -5,10 +5,10 @@ import android.content.Intent
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yannk.respira.data.local.model.SessionData
+import com.yannk.respira.data.local.model.domain.SessionData
 import com.yannk.respira.data.local.model.SessionEntity
-import com.yannk.respira.data.local.model.SleepEnvironment
-import com.yannk.respira.data.local.model.SleepQuality
+import com.yannk.respira.data.local.model.domain.SleepEnvironment
+import com.yannk.respira.data.local.model.domain.SleepQuality
 import com.yannk.respira.data.repository.SessionRepository
 import com.yannk.respira.data.repository.UserRepository
 import com.yannk.respira.service.SleepMonitoringService

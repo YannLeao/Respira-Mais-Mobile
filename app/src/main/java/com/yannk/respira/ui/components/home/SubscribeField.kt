@@ -1,4 +1,4 @@
-package com.yannk.respira.ui.components
+package com.yannk.respira.ui.components.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*

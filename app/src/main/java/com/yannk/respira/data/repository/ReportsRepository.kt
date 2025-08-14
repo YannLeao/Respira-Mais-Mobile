@@ -47,4 +47,8 @@ class ReportsRepository @Inject constructor(
         val startDate = LocalDate.parse(endDate).minusDays(6).toString()
         return dao.getReportsInRange(startDate, endDate).map { it.toDomain() }
     }
+
+    suspend fun logout() {
+        dao.clear()
+    }
 }

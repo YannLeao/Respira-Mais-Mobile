@@ -1,4 +1,4 @@
-package com.yannk.respira.ui.components
+package com.yannk.respira.ui.components.reports
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,8 +23,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.yannk.respira.data.local.model.SleepEnvironment
-import com.yannk.respira.data.local.model.SleepQuality
+import com.yannk.respira.data.local.model.domain.SleepEnvironment
+import com.yannk.respira.data.local.model.domain.SleepQuality
 
 @Composable
 fun SessionMetrics(

@@ -1,4 +1,4 @@
-package com.yannk.respira.ui.components
+package com.yannk.respira.ui.components.reports
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.yannk.respira.ui.components.dashboard.EmptyChart
 import com.yannk.respira.ui.theme.CoughingColor
 import com.yannk.respira.ui.theme.OtherColor
 import com.yannk.respira.ui.theme.SneezingColor

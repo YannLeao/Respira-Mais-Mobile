@@ -21,4 +21,7 @@ interface ReportsDao {
         "SELECT * FROM daily_reports WHERE date BETWEEN :startDate AND :endDate ORDER BY date DESC"
     )
     suspend fun getReportsInRange(startDate: String, endDate: String): List<DailyReportEntity>
+
+    @Query("DELETE FROM daily_reports")
+    suspend fun clear()
 }

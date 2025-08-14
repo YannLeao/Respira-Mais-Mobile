@@ -21,7 +21,7 @@ class SessionRepository @Inject constructor(
 
     suspend fun iniciarSessao(token: String): Int {
         val response = apiClient.monitoringService.startSession("Bearer $token")
-        return response.body()?.session_id ?: throw Exception("Falha ao iniciar sessão")
+        return response.body()?.sessionId ?: throw Exception("Falha ao iniciar sessão")
     }
 
     suspend fun analisarAmbiente(token: String, sessionId: Int, file: File): String {
@@ -47,13 +47,13 @@ class SessionRepository @Inject constructor(
 
     suspend fun salvarSessao(report: SessionReportResponse) {
         val entity = SessionEntity(
-            sessionId = report.session_id,
+            sessionId = report.sessionId,
             ambiente = report.ambiente,
-            quantidadeTosse = report.quantidade_tosse,
-            quantidadeEspirro = report.quantidade_espirro,
-            outrosEventos = report.outros_eventos,
-            dataHoraInicio = report.data_hora_inicio,
-            dataHoraFim = report.data_hora_fim
+            quantidadeTosse = report.quantidadeTosse,
+            quantidadeEspirro = report.quantidadeEspirro,
+            outrosEventos = report.outrosEventos,
+            dataHoraInicio = report.dataHoraInicio,
+            dataHoraFim = report.dataHoraFim
         )
         sessionDao.insert(entity)
     }

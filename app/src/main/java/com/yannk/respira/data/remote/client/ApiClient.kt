@@ -1,5 +1,7 @@
 package com.yannk.respira.data.remote.client
 
+import com.google.gson.FieldNamingPolicy
+import com.google.gson.GsonBuilder
 import com.yannk.respira.data.remote.api.AuthApiService
 import com.yannk.respira.data.remote.api.MonitoringApiService
 import com.yannk.respira.data.remote.api.ReportApiService
@@ -20,9 +22,14 @@ class ApiClient {
         .addInterceptor(logging)
         .build()
 
+    // Configura Gson para converter automaticamente snake_case → camelCase
+    private val gson = GsonBuilder()
+        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+        .create()
+
     private val retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(gson))
         .client(client)
         .build()
 

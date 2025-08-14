@@ -1,4 +1,4 @@
-package com.yannk.respira.ui.components
+package com.yannk.respira.ui.components.dashboard
 
 import android.Manifest
 import androidx.compose.foundation.background
@@ -23,7 +23,13 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.yannk.respira.data.local.model.SessionData
+import com.yannk.respira.data.local.model.domain.SessionData
+import com.yannk.respira.ui.components.reports.SessionHeader
+import com.yannk.respira.ui.components.reports.SessionMetrics
+import com.yannk.respira.ui.components.dialogs.AmbientAnalysisDialog
+import com.yannk.respira.ui.components.dialogs.MonitoringStartedDialog
+import com.yannk.respira.ui.components.dialogs.RationaleDialog
+import com.yannk.respira.ui.components.reports.DonutChart
 import com.yannk.respira.ui.viewmodel.DashboardViewModel
 import com.yannk.respira.ui.viewmodel.SessionViewModel
 
