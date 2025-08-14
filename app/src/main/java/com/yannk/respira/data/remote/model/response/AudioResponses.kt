@@ -1,18 +1,22 @@
 package com.yannk.respira.data.remote.model.response
 
-data class AmbienteResponseDto(
-    val ambiente: String
-)
-
-data class ResumoResponseDto(
-    val duracao: Long,
-    val eventos: EventosResponse,
+data class SessionStartResponse(
+    val sessionId: Int,
     val ambiente: String,
-    val classificacao: String
+    val dataHoraInicio: String
 )
 
-data class EventosResponse(
-    val tosse: Int,
-    val espirro: Int,
-    val outros: Int
+data class MonitoringResponse(
+    val status: String,
+    val detalhes: String
+)
+
+data class SessionReportResponse(
+    val sessionId: Int,
+    val ambiente: String,
+    val quantidadeTosse: Int,
+    val quantidadeEspirro: Int,
+    val outrosEventos: Int,
+    val dataHoraInicio: String,
+    val dataHoraFim: String
 )

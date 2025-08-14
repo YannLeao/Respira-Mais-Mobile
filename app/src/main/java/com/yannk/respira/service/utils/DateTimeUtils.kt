@@ -17,10 +17,19 @@ fun String.formatSessionDateTime(): String {
         }
 
         val dayFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)
-        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
-        "Na $dayPeriod de ${dateTime.format(dayFormatter)} às ${dateTime.format(timeFormatter)}"
+        "Na $dayPeriod de ${dateTime.format(dayFormatter)}"
     } catch (e: Exception) {
-        "Sessão iniciada recentemente"
+        "Nenhuma sessão iniciada recentemente"
+    }
+}
+
+fun String.formatTime(): String {
+    return try {
+        val formatter = DateTimeFormatter.ISO_DATE_TIME
+        val dateTime = LocalDateTime.parse(this, formatter)
+        DateTimeFormatter.ofPattern("HH:mm").format(dateTime)
+    } catch (e: Exception) {
+        "--:--"
     }
 }

@@ -2,6 +2,8 @@ package com.yannk.respira.di
 
 import android.content.Context
 import androidx.room.Room
+import com.yannk.respira.data.local.dao.ReportsDao
+import com.yannk.respira.data.local.dao.SessionDao
 import com.yannk.respira.data.local.dao.UserDao
 import com.yannk.respira.data.local.database.AppDatabase
 import dagger.Module
@@ -22,11 +24,22 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "app_db"
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .build()
     }
     
     @Provides
     fun providesUserDao(db: AppDatabase): UserDao {
         return db.userDao()
+    }
+
+    @Provides
+    fun providesSessionDao(db: AppDatabase): SessionDao {
+        return db.sessionDao()
+    }
+
+    @Provides
+    fun providesReportsDao(db: AppDatabase): ReportsDao {
+        return db.reportsDao()
     }
 }

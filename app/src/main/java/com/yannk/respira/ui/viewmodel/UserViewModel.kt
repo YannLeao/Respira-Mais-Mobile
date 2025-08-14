@@ -9,6 +9,7 @@ import com.yannk.respira.util.ResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -72,5 +73,12 @@ class UserViewModel @Inject constructor(
 
     fun logout() {
         viewModelScope.launch { repository.logout() }
+    }
+
+    fun getToken(callback: (String?) -> Unit) {
+        viewModelScope.launch {
+            val token = repository.getToken()
+            callback(token)
+        }
     }
 }

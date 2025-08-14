@@ -3,7 +3,7 @@ package com.yannk.respira.service
 import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.LifecycleService
-import com.yannk.respira.data.remote.api.ApiClient
+import com.yannk.respira.data.remote.client.ApiClient
 import com.yannk.respira.service.utils.NotificationUtil
 import com.yannk.respira.service.utils.gravarWav
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +28,9 @@ class SleepMonitoringService : LifecycleService() {
     private var isRunning = false
     private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
+    private var token: String? = null
+    private var sessionId: Int? = null
+
     override fun onCreate() {
         super.onCreate()
         startForeground(NotificationUtil.NOTIFICATION_ID, NotificationUtil.createNotification(this))
@@ -35,13 +38,17 @@ class SleepMonitoringService : LifecycleService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        if (!isRunning) {
+
+        token = intent?.getStringExtra("token")
+        sessionId = intent?.getIntExtra("session_id", -1)
+
+        if (!isRunning && token != null && sessionId != null && sessionId != -1) {
             isRunning = true
             coroutineScope.launch {
                 while (isRunning) {
                     val file = gravarWav(applicationContext)
-                    enviarAudio(file)
-                    delay(10000) // espera 10 segundos antes da próxima gravação
+                    enviarAudio(file, sessionId!!)
+                    delay(10000)
                 }
             }
         }
@@ -55,13 +62,17 @@ class SleepMonitoringService : LifecycleService() {
         coroutineScope.cancel()
     }
 
-    private fun enviarAudio(file: File) {
+    private fun enviarAudio(file: File, sessionId: Int) {
+        val tokenHeader = "Bearer $token"
         val requestFile = file.asRequestBody("audio/wav".toMediaTypeOrNull())
-        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+        val filePart = MultipartBody.Part.createFormData("file", file.name, requestFile)
 
         coroutineScope.launch {
             try {
-                val response = apiClient.apiService.analisarAudio(body)
+                val response = apiClient.monitoringService.uploadAudio(
+                    token = tokenHeader,
+                    file = filePart,
+                    sessionId = sessionId)
                 Log.d("SleepService", "Áudio enviado: ${response.isSuccessful}")
             } catch (e: Exception) {
                 Log.e("SleepService", "Erro ao enviar áudio", e)

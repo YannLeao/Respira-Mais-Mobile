@@ -30,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,32 +41,35 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.yannk.respira.ui.components.BottomBar
+import com.yannk.respira.ui.components.buttons.BottomBar
 import com.yannk.respira.ui.navigation.Routes
-import com.yannk.respira.ui.theme.ButtonColor
-import com.yannk.respira.ui.theme.TextColor
+import com.yannk.respira.ui.viewmodel.ThemeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    themeViewModel: ThemeViewModel = hiltViewModel()
 ) {
+    val darkModeEnabled by themeViewModel.isDarkMode.collectAsState()
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Configurações") },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = ButtonColor
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.primary
                 ),
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Voltar",
-                            tint = ButtonColor
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -83,7 +87,7 @@ fun SettingsScreen(
                 .padding(padding)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .background(Color.White),
+                .background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             SettingsSection(title = "Conta") {
@@ -111,12 +115,13 @@ fun SettingsScreen(
             }
 
             SettingsSection(title = "Aparência") {
-                var darkModeEnabled by remember { mutableStateOf(false) }
                 SettingsSwitchItem(
                     icon = Icons.Default.DarkMode,
                     text = "Modo Escuro",
                     checked = darkModeEnabled,
-                    onCheckedChange = { darkModeEnabled = it }
+                    onCheckedChange = { novoValor ->
+                        themeViewModel.setDarkMode(novoValor)
+                    }
                 )
             }
 
@@ -140,7 +145,7 @@ fun SettingsSection(
         Text(
             text = title,
             style = MaterialTheme.typography.titleSmall,
-            color = TextColor,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 8.dp)
         )
         content()
@@ -165,18 +170,18 @@ fun SettingsSwitchItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = ButtonColor,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
-            Text(text, color = ButtonColor)
+            Text(text, color = MaterialTheme.colorScheme.onBackground)
         }
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,
             colors = SwitchDefaults.colors(
-                checkedThumbColor = Color.White,
-                checkedTrackColor = ButtonColor,
+                checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                checkedTrackColor = MaterialTheme.colorScheme.primary,
                 uncheckedThumbColor = Color.White,
                 uncheckedTrackColor = Color.Gray
             )
@@ -187,5 +192,5 @@ fun SettingsSwitchItem(
 @Preview
 @Composable
 private fun SettingsScreenPrev() {
-    SettingsScreen(navController = rememberNavController())
+    SettingsScreen(navController = rememberNavController(), viewModel())
 }

@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yannk.respira.data.remote.api.ApiClient
+import com.yannk.respira.data.remote.client.ApiClient
 import com.yannk.respira.service.utils.gravarWav
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -48,8 +48,8 @@ class MicrophoneViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val response = apiClient.apiService.analisarAudio(body)
-                callback(response.isSuccessful)
+//                val response = apiClient.apiService.analisarAudio(body)
+//                callback(response.isSuccessful)
             } catch (e: Exception) {
                 callback(false)
             }

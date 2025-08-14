@@ -35,30 +35,30 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.yannk.respira.ui.components.BottomBar
+import com.yannk.respira.ui.components.buttons.BottomBar
 import com.yannk.respira.ui.navigation.Routes
-import com.yannk.respira.ui.theme.AzulClaro
-import com.yannk.respira.ui.theme.ButtonColor
-import com.yannk.respira.ui.theme.TextColor
+import com.yannk.respira.ui.viewmodel.ReportsViewModel
+import com.yannk.respira.ui.viewmodel.SessionViewModel
 import com.yannk.respira.ui.viewmodel.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
-    viewModel: UserViewModel = hiltViewModel()
+    userViewModel: UserViewModel = hiltViewModel(),
+    sessionViewModel: SessionViewModel = hiltViewModel(),
+    reportsViewModel: ReportsViewModel = hiltViewModel()
 ) {
-    val userName by viewModel.userName.collectAsState()
-    val userEmail by viewModel.userEmail.collectAsState()
+    val userName by userViewModel.userName.collectAsState()
+    val userEmail by userViewModel.userEmail.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.fetchUserName()
-        viewModel.fetchUserEmail()
+        userViewModel.fetchUserName()
+        userViewModel.fetchUserEmail()
     }
 
     Scaffold(
@@ -66,8 +66,8 @@ fun ProfileScreen(
             TopAppBar(
                 title = { Text("") },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = ButtonColor
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.primary
                 )
             )
         },
@@ -83,7 +83,7 @@ fun ProfileScreen(
                 .padding(padding)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .background(Color.White),
+                .background(MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
@@ -93,13 +93,13 @@ fun ProfileScreen(
                 modifier = Modifier
                     .size(120.dp)
                     .clip(CircleShape)
-                    .background(AzulClaro.copy(alpha = 0.2f)),
+                    .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = "Foto do perfil",
-                    tint = ButtonColor,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(60.dp)
                 )
             }
@@ -107,13 +107,13 @@ fun ProfileScreen(
             Text(
                 text = userName,
                 style = MaterialTheme.typography.headlineSmall,
-                color = ButtonColor
+                color = MaterialTheme.colorScheme.primary
             )
 
             Text(
                 text = userEmail,
                 style = MaterialTheme.typography.bodyMedium,
-                color = TextColor
+                color = MaterialTheme.colorScheme.secondary
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -148,7 +148,9 @@ fun ProfileScreen(
                     icon = Icons.Default.Logout,
                     text = "Sair",
                     onClick = {
-                        viewModel.logout()
+                        userViewModel.logout()
+                        sessionViewModel.logout()
+                        reportsViewModel.logout()
                         navController.navigate(Routes.WELCOME) {
                             popUpTo(Routes.WELCOME) { inclusive = true }
                         }
@@ -168,8 +170,8 @@ fun SettingsItem(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White,
-            contentColor = ButtonColor
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.primary
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         onClick = onClick
@@ -182,7 +184,7 @@ fun SettingsItem(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = ButtonColor
+                tint = MaterialTheme.colorScheme.primary
             )
             Text(text)
         }

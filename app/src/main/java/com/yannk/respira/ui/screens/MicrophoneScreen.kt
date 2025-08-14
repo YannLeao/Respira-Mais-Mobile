@@ -42,7 +42,6 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.yannk.respira.service.SleepMonitoringService
-import com.yannk.respira.ui.theme.ButtonColor
 import com.yannk.respira.ui.viewmodel.MicrophoneViewModel
 import kotlinx.coroutines.delay
 
@@ -124,7 +123,7 @@ fun MicrophoneScreen(
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = Color.White,
                         uncheckedThumbColor = Color.White,
-                        checkedTrackColor = ButtonColor,
+                        checkedTrackColor = MaterialTheme.colorScheme.primary,
                         uncheckedTrackColor = Color.Gray
                     )
                 )
@@ -135,7 +134,7 @@ fun MicrophoneScreen(
 
             Icon(
                 imageVector = if (isRecording.value) Icons.Filled.Mic else Icons.Filled.MicOff,
-                tint = if (isRecording.value) ButtonColor else Color.Gray,
+                tint = if (isRecording.value) MaterialTheme.colorScheme.primary else Color.Gray,
                 modifier = Modifier.size(100.dp),
                 contentDescription = null
             )
@@ -160,7 +159,7 @@ fun MicrophoneScreen(
                         message.value = "Gravando..."
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = ButtonColor,
+                        containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = Color.White
                     )
                 ) {
@@ -177,7 +176,7 @@ fun MicrophoneScreen(
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = ButtonColor,
+                        containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = Color.White
                     )
                 ) {
@@ -191,7 +190,7 @@ fun MicrophoneScreen(
             Button(
                 onClick = { permissionsState.launchPermissionRequest() },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = ButtonColor,
+                    containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = Color.White
                 )
             ) {

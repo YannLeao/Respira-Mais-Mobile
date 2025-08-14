@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.yannk.respira.R
-import com.yannk.respira.ui.components.FundoImg
-import com.yannk.respira.ui.components.VectorImg
+import com.yannk.respira.ui.components.home.FundoImg
+import com.yannk.respira.ui.components.home.VectorImg
 import com.yannk.respira.ui.navigation.Routes
-import com.yannk.respira.ui.theme.TextColor
+import com.yannk.respira.ui.theme.SecondaryLight
 
 @Composable
 fun WelcomeScreen(navController: NavHostController) {
@@ -51,18 +51,21 @@ fun WelcomeScreen(navController: NavHostController) {
 
             Text("Bem Vindo!",
                 style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold)
+                fontWeight = FontWeight.Bold,
+                color = Color.Black)
 
             Spacer(modifier = Modifier.height(8.dp))
 
             Text("Cuide da sua respiração com segurança.",
                 style = MaterialTheme.typography.bodyMedium,
+                color = Color.Black
             )
 
             Spacer(modifier = Modifier.height(4.dp))
 
             Text("Monitore, registre e enfrente as crises com apoio.",
                 style = MaterialTheme.typography.bodyMedium,
+                color = Color.Black
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -76,7 +79,7 @@ fun WelcomeScreen(navController: NavHostController) {
                     .align(Alignment.End),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White,
-                    contentColor = TextColor
+                    contentColor = SecondaryLight
                 )
 
             ) {

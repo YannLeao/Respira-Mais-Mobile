@@ -6,15 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.yannk.respira.ui.components.BottomBar
-import com.yannk.respira.ui.components.DashboardContent
-import com.yannk.respira.ui.components.TopBar
+import com.yannk.respira.ui.components.buttons.BottomBar
+import com.yannk.respira.ui.components.dashboard.DashboardContent
+import com.yannk.respira.ui.components.home.TopBar
 import com.yannk.respira.ui.navigation.Routes
-import com.yannk.respira.ui.viewmodel.DashboardViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun DashboardScreen(
@@ -27,7 +24,8 @@ fun DashboardScreen(
     Scaffold(
         topBar = {
             TopBar(
-                onReload = {/* scope.launch { dashboardViewModel.refreshData() }*/ }
+                onReload = {/* scope.launch { dashboardViewModel.refreshData() }*/ },
+
 
             )
         },

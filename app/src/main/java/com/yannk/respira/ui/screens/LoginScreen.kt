@@ -1,14 +1,9 @@
 package com.yannk.respira.ui.screens
 
-
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,15 +12,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.yannk.respira.R
-import com.yannk.respira.ui.components.BigButton
-import com.yannk.respira.ui.components.ButtonsLogin
-import com.yannk.respira.ui.components.ErrorDialog
-import com.yannk.respira.ui.components.FundoImg
-import com.yannk.respira.ui.components.LoadingDialog
-import com.yannk.respira.ui.components.SubscribeField
-import com.yannk.respira.ui.components.TextInput
-import com.yannk.respira.ui.components.VectorImg
+import com.yannk.respira.ui.components.buttons.BigButton
+import com.yannk.respira.ui.components.buttons.ButtonsLogin
+import com.yannk.respira.ui.components.dialogs.ErrorDialog
+import com.yannk.respira.ui.components.dialogs.LoadingDialog
+import com.yannk.respira.ui.components.home.FundoImg
+import com.yannk.respira.ui.components.home.SubscribeField
+import com.yannk.respira.ui.components.home.TextInput
+import com.yannk.respira.ui.components.home.VectorImg
 import com.yannk.respira.ui.navigation.Routes
+import com.yannk.respira.ui.theme.RespiraTheme // Importe seu tema
 import com.yannk.respira.ui.viewmodel.UserViewModel
 import com.yannk.respira.util.ResultState
 
@@ -34,88 +30,78 @@ fun LoginScreen(
     navController: NavHostController,
     viewModel: UserViewModel = hiltViewModel()
 ) {
-    val loginState = viewModel.loginState.collectAsState().value
+    // CORREÇÃO: Envelopamos todo o conteúdo com o tema, forçando o modo claro.
+    RespiraTheme(darkTheme = false) {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            val loginState = viewModel.loginState.collectAsState().value
+            var email by rememberSaveable { mutableStateOf("") }
+            var password by rememberSaveable { mutableStateOf("") }
+            val isEnabled = email.isNotBlank() && password.isNotBlank()
 
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-
-    val isEnabled = email.isNotBlank() && password.isNotBlank()
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        FundoImg()
-        VectorImg(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(WindowInsets.navigationBars.asPaddingValues()),
-            source = R.drawable.vector__3_
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(WindowInsets.systemBars.asPaddingValues())
-                .align(Alignment.TopCenter),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            ButtonsLogin(
-                modifier = Modifier.padding(top = 200.dp),
-                isLogin = true,
-                navController = navController
-            )
-
-            Spacer(modifier = Modifier.height(15.dp))
-
-            TextInput(label = "Email", value = email, onValueChange = { email = it })
-            Spacer(modifier = Modifier.height(10.dp))
-
-            TextInput(label = "Senha", isPassword = true, value = password, onValueChange = { password = it })
-            Spacer(modifier = Modifier.height(42.dp))
-
-            BigButton(
-                text = "Sign-up",
-                enabled = isEnabled,
-                onClick = {
-                    viewModel.login(email, password)
-                }
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            SubscribeField(
-                firstText = "Entre com",
-                secondText = "Não possui uma conta? Cadastre-se",
-                onClick = {
-                    navController.navigate(Routes.SIGN_IN) {
-                        launchSingleTop = true
-                        popUpTo(Routes.LOGIN) { saveState = true }
-                    }
-                }
-            )
-        }
-
-        when (loginState) {
-            is ResultState.Loading -> {
-                LoadingDialog()
-            }
-
-            is ResultState.Success<*> -> {
-                LaunchedEffect(Unit) {
-                    viewModel.clearRegisterState()
-                    navController.navigate(Routes.DASHBOARD_HOME) {
-                        launchSingleTop = true
-                        popUpTo(Routes.LOGIN) { inclusive = true }
-                    }
-                }
-            }
-
-            is ResultState.Error -> {
-                ErrorDialog(
-                    message = loginState.message,
-                    onDismiss = { viewModel.clearLoginState() }
+            Box(modifier = Modifier.fillMaxSize()) {
+                FundoImg()
+                VectorImg(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(WindowInsets.navigationBars.asPaddingValues()),
+                    source = R.drawable.vector__3_
                 )
-            }
 
-            null -> Unit
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(WindowInsets.systemBars.asPaddingValues())
+                        .align(Alignment.TopCenter),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // Todo o seu conteúdo original vai aqui dentro
+                    ButtonsLogin(
+                        modifier = Modifier.padding(top = 200.dp),
+                        isLogin = true,
+                        navController = navController
+                    )
+                    Spacer(modifier = Modifier.height(15.dp))
+                    TextInput(label = "Email", value = email, onValueChange = { email = it })
+                    Spacer(modifier = Modifier.height(10.dp))
+                    TextInput(
+                        label = "Senha",
+                        isPassword = true,
+                        value = password,
+                        onValueChange = { password = it })
+                    Spacer(modifier = Modifier.height(42.dp))
+                    BigButton(
+                        text = "Sign-up",
+                        enabled = isEnabled,
+                        onClick = { viewModel.login(email, password) })
+                    Spacer(modifier = Modifier.height(20.dp))
+                    SubscribeField(
+                        firstText = "Entre com",
+                        secondText = "Não possui uma conta? Cadastre-se",
+                        onClick = {
+                            navController.navigate(Routes.SIGN_IN) {
+                                launchSingleTop = true
+                                popUpTo(Routes.LOGIN) { saveState = true }
+                            }
+                        }
+                    )
+                }
+
+                when (loginState) {
+                    is ResultState.Loading -> LoadingDialog()
+                    is ResultState.Success<*> -> {
+                        LaunchedEffect(Unit) {
+                            viewModel.clearRegisterState()
+                            navController.navigate(Routes.DASHBOARD_HOME) {
+                                popUpTo(Routes.LOGIN) { inclusive = true }
+                            }
+                        }
+                    }
+                    is ResultState.Error -> ErrorDialog(
+                        message = loginState.message,
+                        onDismiss = { viewModel.clearLoginState() })
+                    null -> Unit
+                }
+            }
         }
     }
 }
