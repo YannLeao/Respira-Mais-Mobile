@@ -1,0 +1,33 @@
+package com.yannk.respira.data.remote.client
+
+import com.yannk.respira.data.remote.api.ApiService
+import com.yannk.respira.data.remote.api.AuthApiService
+import com.yannk.respira.data.remote.api.MonitoringApiService
+import com.yannk.respira.data.remote.api.ReportApiService
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
+class ApiClient {
+
+    private val baseUrl = "http://192.168.18.3:8000/"
+
+    private val logging = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+
+    private val client = OkHttpClient.Builder()
+        .addInterceptor(logging)
+        .build()
+
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(baseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(client)
+        .build()
+
+    val authService: AuthApiService = retrofit.create(AuthApiService::class.java)
+    val monitoringService: MonitoringApiService = retrofit.create(MonitoringApiService::class.java)
+    val reportService: ReportApiService = retrofit.create(ReportApiService::class.java)
+}

@@ -25,6 +25,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import com.yannk.respira.data.local.model.SessionData
 import com.yannk.respira.ui.viewmodel.DashboardViewModel
 import com.yannk.respira.ui.viewmodel.SessionViewModel
 
@@ -66,12 +67,21 @@ fun DashboardContent(
     ) {
         SessionHeader(sessionData)
 
-        DonutChart(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            sessionData = sessionData
-        )
+        if (sessionData == SessionData.empty()) {
+            EmptyChart(
+                modifier = modifier,
+                isEmptySession = true
+            )
+        } else {
+            DonutChart(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                coughCount = sessionData.coughCount,
+                sneezeCount = sessionData.sneezeCount,
+                otherEvents = sessionData.otherEvents
+            )
+        }
 
         MonitoringSwitch(
             isEnabled = isMonitoring,

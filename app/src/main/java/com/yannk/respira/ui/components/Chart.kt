@@ -38,16 +38,18 @@ import com.yannk.respira.ui.theme.SneezingColor
 
 @Composable
 fun DonutChart(
-    sessionData: SessionData,
+    coughCount: Int,
+    sneezeCount: Int,
+    otherEvents: Int,
     modifier: Modifier = Modifier,
     chartSize: Dp = 200.dp,
     legendOnSide: Boolean = false
 ) {
     // Prepara os dados para o gráfico
     val data = listOf(
-        EventStat("Tosse", sessionData.coughCount, CoughingColor),
-        EventStat("Espirro", sessionData.sneezeCount, SneezingColor),
-        EventStat("Outros", sessionData.otherEvents, OtherColor)
+        EventStat("Tosse", coughCount, CoughingColor),
+        EventStat("Espirro", sneezeCount, SneezingColor),
+        EventStat("Outros", otherEvents, OtherColor)
     )
 
     val totalEvents = data.sumOf { it.count }
@@ -56,9 +58,7 @@ fun DonutChart(
     if (totalEvents == 0) {
         EmptyChart(
             modifier = modifier,
-            chartSize = chartSize,
-            legendOnSide = legendOnSide,
-            isEmptySession = sessionData == SessionData.empty()
+            chartSize = chartSize
         )
         return
     }
@@ -142,45 +142,6 @@ fun DonutChart(
             Spacer(modifier = Modifier.width(16.dp))
             legend()
         }
-    }
-}
-
-@Composable
-private fun EmptyChart(
-    modifier: Modifier,
-    chartSize: Dp,
-    legendOnSide: Boolean,
-    isEmptySession: Boolean
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box(
-            modifier = Modifier.size(chartSize),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.InsertChart,
-                contentDescription = null,
-                modifier = Modifier.size(200.dp),
-                tint = Color.LightGray
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = if (isEmptySession) {
-                "Nenhuma sessão realizada"
-            } else {
-                "Nenhum evento registrado na última sessão"
-            },
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.Gray
-        )
     }
 }
 

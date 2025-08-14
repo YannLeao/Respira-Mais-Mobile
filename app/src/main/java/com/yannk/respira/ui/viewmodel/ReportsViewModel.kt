@@ -2,7 +2,7 @@ package com.yannk.respira.ui.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.yannk.respira.data.remote.api.ApiClient
+import com.yannk.respira.data.remote.client.ApiClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

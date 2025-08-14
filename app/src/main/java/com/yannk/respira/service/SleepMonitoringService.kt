@@ -3,7 +3,7 @@ package com.yannk.respira.service
 import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.LifecycleService
-import com.yannk.respira.data.remote.api.ApiClient
+import com.yannk.respira.data.remote.client.ApiClient
 import com.yannk.respira.service.utils.NotificationUtil
 import com.yannk.respira.service.utils.gravarWav
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,7 +69,7 @@ class SleepMonitoringService : LifecycleService() {
 
         coroutineScope.launch {
             try {
-                val response = apiClient.apiService.monitorarAudio(
+                val response = apiClient.monitoringService.uploadAudio(
                     token = tokenHeader,
                     file = filePart,
                     sessionId = sessionId)

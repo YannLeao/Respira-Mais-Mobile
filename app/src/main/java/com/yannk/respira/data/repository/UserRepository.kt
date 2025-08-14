@@ -3,7 +3,7 @@ package com.yannk.respira.data.repository
 import com.yannk.respira.data.local.UserPreferences
 import com.yannk.respira.data.local.dao.UserDao
 import com.yannk.respira.data.local.model.User
-import com.yannk.respira.data.remote.api.ApiClient
+import com.yannk.respira.data.remote.client.ApiClient
 import com.yannk.respira.data.remote.model.request.LoginDto
 import com.yannk.respira.data.remote.model.request.UserDto
 import com.yannk.respira.util.ResultState
@@ -18,7 +18,7 @@ class UserRepository @Inject constructor(
 ) {
     suspend fun register(dto: UserDto): ResultState<String> {
         return try {
-            val response = api.apiService.register(dto)
+            val response = api.authService.register(dto)
             preferences.saveToken(response.access_token)
 
             val user = User(
@@ -45,7 +45,7 @@ class UserRepository @Inject constructor(
 
     suspend fun login(loginDto: LoginDto): ResultState<String> {
         return try {
-            val response = api.apiService.login(loginDto)
+            val response = api.authService.login(loginDto)
             preferences.saveToken(response.access_token)
 
             val user = User(
